@@ -1,0 +1,73 @@
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: none;
+    border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 0px;
+    -webkit-box-shadow: none;
+    background-color: dimgray;
+}
+
+table {
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    border: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+    table tr td {
+        border: none;
+    }
+
+#header {
+    height: 69px;
+    background-color: dodgerblue;
+    text-align: center;
+}
+
+    #header input[type="text"] {
+        width: 90%;
+        border: 1px solid #ccc;
+        height: 19px;
+        background-color: #fafafa;
+    }
+
+    #header button {
+        border: 1px solid #ccc;
+        margin-top: 9px;
+        width: 63px;
+        color: gray;
+    }
+
+        #header button.active {
+            border: 1px solid #808080;
+            color: #333;
+        }
+
+#main {
+    width: 100%;
+    height: 100%;
+    background-color: gray;
+    min-height: 99px;
+}
+
+#footer {
+    height: 45px;
+    background-color: orange;
+}

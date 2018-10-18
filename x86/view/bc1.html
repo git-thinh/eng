@@ -1,0 +1,55 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <link type="text/css" href="local://view/css/article.css" rel="stylesheet" />
+    <script type="text/javascript" src="local://view/js/across-tabs.min.js"></script>
+</head>
+<body>
+     
+    <button onclick="openNewTab()">Open New tab</button>
+    <div id="tabs" style="visibility: hidden">
+        <h3>List of all Tabs</h3>
+        <div id="all-tabs"></div>
+        <h3>List of Opened Tabs</h3>
+        <div id="opened-tabs"></div>
+        <h3>List of Closed Tabs</h3>
+        <div id="closed-tabs"></div>
+        <button onclick="closeAllTabs()">Close All</button>
+    </div>
+
+    <script type="text/javascript">
+        var f_log = 1 ? console.log.bind(console, '[LOG] ') : function () { };
+
+        var config = {
+            onHandshakeCallback: function (data) {
+                f_log('onHandshakeCallback = ', data);
+            },
+            onPollingCallback: function () {
+                //f_log('onPollingCallback = ', e);
+            },
+            onChildCommunication: function (data) {
+                f_log('onChildCommunication = ', data);
+            },
+            onChildDisconnect: function (data) {
+                f_log('onChildDisconnect = ', data);
+            }
+        } 
+        var parent = new AcrossTabs.default.Parent(config);
+
+        var counter = 0;
+        function openNewTab() {
+            var config = {
+                url: 'local://view/child.html',
+                windowName: 'Child - ' + ++counter,
+                windowFeatures: ''
+            };
+            parent.openNewTab(config);
+        }
+
+    </script>
+</body>
+</html>
+<canvas id=___canvas></canvas>
+<button id=___reload onclick='location.reload()'>Reload</button>
+<div id=___box_tran></div>
+<script> //f_domLoaded(); </script>

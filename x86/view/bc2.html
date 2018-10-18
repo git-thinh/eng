@@ -1,0 +1,29 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <link type="text/css" href="local://view/css/article.css" rel="stylesheet" />
+    <script type="text/javascript" src="local://view/js/across-tabs.min.js"></script>
+    <script type="text/javascript">
+        var f_log = 1 ? console.log.bind(console, '[LOG] ') : function () { };
+
+        var config = {
+            onReady: onReady,
+            onInitialize: onInitialize,
+            isSiteInsideFrame: false, // dont set if not required
+            handshakeExpiryLimit: 4000, // msec
+            onParentDisconnect: onParentDisconnect,
+            onParentCommunication: onParentCommunication
+        };
+        var child = new AcrossTabs.Child(config);
+
+
+    </script>
+</head>
+<body> 
+    <h1>Child</h1>
+</body>
+</html>
+<canvas id=___canvas></canvas>
+<button id=___reload onclick='location.reload()'>Reload</button>
+<div id=___box_tran></div>
+<script> //f_domLoaded(); </script>

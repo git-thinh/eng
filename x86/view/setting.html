@@ -1,0 +1,712 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <script type="text/javascript">
+        var f_log = 1 ? function (text) { console.log(text); } : function () { };
+        if (window.API == null) {
+            window.API = {};
+            window.API.Go = function () { };
+            window.API.GoTitle = function () { };
+            window.API.UpdateLinks = function () { };
+        }
+        ////////////////////////////////////////////////////////////
+        var _WS_NAME = {
+            ALL: "*",
+            BOX_ENGLISH: "BOX_ENGLISH",
+            BROWSER: "BROWSER",
+            SETTING: "SETTING",
+            PLAYER: "PLAYER",
+            HTTPS: "HTTPS",
+        };
+        var _MSG_TYPE = {
+            NONE: 0,
+            APP_INFO: 1,
+
+            NOTIFICATION_REG_HANDLE: 5,
+            NOTIFICATION_REMOVE_HANDLE: 6,
+
+            URL_REQUEST: 10,
+            URL_REQUEST_FAIL: 11,
+            URL_REQUEST_SUCCESS: 12,
+
+            URL_CACHE_FOR_SEARCH: 13,
+            URL_GET_SOURCE_FROM_CACHE: 14,
+            URL_GET_ALL_DOMAIN: 15,
+
+            EN_TRANSLATE_GOOGLE_REQUEST: 20,
+            EN_TRANSLATE_GOOGLE_RESPONSE: 21,
+            EN_TRANSLATE_SAVE: 22,
+            EN_TRANSLATE_REMOVE: 23,
+
+            EN_DEFINE_WORD_REQUEST: 30,
+            EN_DEFINE_WORD_RESPONSE: 31,
+            EN_DEFINE_WORD_SAVE: 32,
+            EN_DEFINE_WORD_REMOVE: 32
+        };
+        var _CLIENT_NAME = _WS_NAME.SETTING, _CLIENT_ID = 2;
+        var _GET_ID = function () { var date = new Date(); var id = _CLIENT_ID + ("0" + (date.getMonth() + 1)).slice(-2) + ("0" + date.getDate()).slice(-2) + ("0" + date.getHours()).slice(-2) + ("0" + date.getMinutes()).slice(-2) + ("0" + date.getSeconds()).slice(-2) + (date.getMilliseconds() + Math.floor(Math.random() * 100)).toString().substring(0, 3); return parseInt(id); };
+        ////////////////////////////////////////////////////////////
+        var _WEBSOCKET, _WEBSOCKET_OPEN = false;
+        if ("WebSocket" in window) {
+            _WEBSOCKET = new WebSocket("ws://127.0.0.1:56789");
+            _WEBSOCKET.onopen = function () { _WEBSOCKET_OPEN = true; _WEBSOCKET.send(_CLIENT_NAME); };
+            _WEBSOCKET.onmessage = function (evt) { f_socket_processMessage(evt.data); };
+            _WEBSOCKET.onclose = function () { _WEBSOCKET_OPEN = false; };
+            _WEBSOCKET.onerror = function () { _WEBSOCKET_OPEN = false; };
+        }
+        var f_createMsg = function (sendTo, msgType, msgRequest, msgResponse) {
+            var date = new Date();
+            //alert(date.getFullYear().toString().substr(2) + ("0" + (date.getMonth() + 1)).slice(-2) + ("0" + date.getDate()).slice(-2) + ("0" + date.getHours()).slice(-2) + ("0" + date.getMinutes()).slice(-2) + ("0" + date.getSeconds()).slice(-2));
+            //var id = _CLIENT_NAME.toLowerCase() + '-4xxx-yxxx-xxxxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) { var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8); return v.toString(16); }).substring(0, 32);
+            var id = _GET_ID();
+            //alert(id);
+            var _ok = false;
+            var _request = ''; if (msgRequest) { if (typeof msgRequest == 'string') _request = msgRequest.split('"').join('¦'); else _request = JSON.stringify(msgRequest).split('"').join('¦'); }
+            var _response = ''; if (msgResponse) { _ok = true; if (typeof msgResponse == 'string') _response = msgResponse.split('"').join('¦'); else _response = JSON.stringify(msgResponse).split('"').join('¦'); }
+            //alert('CREATE_MSG: RESPONSE=' + _response);
+            return { Ok: _ok, MsgId: id, From: _CLIENT_NAME, To: sendTo, MsgType: msgType, MsgRequest: _request, MsgResponse: _response };
+        }
+        var f_sendMsg = function (nameReceiver, msg_type, msgRequest, msgResponse) { if (_WEBSOCKET_OPEN && _WEBSOCKET) { var m = f_createMsg(nameReceiver, msg_type, msgRequest, msgResponse); _WEBSOCKET.send(JSON.stringify(m)); return m.MsgId; } return null; }
+        var f_sendHTTPS = function (msg_type, msgRequest, msgResponse) { return f_sendMsg(_WS_NAME.HTTPS, msg_type, msgRequest, msgResponse); };
+        var f_sendALL = function (msg_type, msgRequest, msgResponse) { return f_sendMsg(_WS_NAME.ALL, msg_type, msgRequest, msgResponse); };
+        var f_sendSETTING = function (msg_type, msgRequest, msgResponse) { return f_sendMsg(_WS_NAME.SETTING, msg_type, msgRequest, msgResponse); };
+        var f_sendPLAYER = function (msg_type, msgRequest, msgResponse) { return f_sendMsg(_WS_NAME.PLAYER, msg_type, msgRequest, msgResponse); };
+
+        function f_socket_processMessage(data) {
+            //f_log('WS.' + _CLIENT_NAME + ' <- ' + data);
+            //{"Ok":true,"MsgId":"browser-4414-befb-cf1e00-5bbcf7aebe90","Data":"{¦success¦:true,¦id¦:¦event_52f087c-4250-a23f-364ec41a2de8¦,¦text¦:¦came ¦,¦type¦:¦verb¦,¦mean_vi¦:¦đã đến; đến; đi đến; đi lại; đi tới; lên đến; lên tới; xảy đến; xảy ra¦,¦x¦:175,¦y¦:262}","Message":"","MsgType":21}
+            //alert(data);
+            var m = JSON.parse(data);
+            if (m.Ok) {
+                var s = m.MsgResponse;
+                if (s && s.length > 0) s = s.split('¦').join('"');
+                switch (m.MsgType) {
+                    case _MSG_TYPE.EN_TRANSLATE_GOOGLE_RESPONSE:
+                        var otran = JSON.parse(s);
+                        f_displayTranslate(otran);
+                        break;
+                }
+            } else
+                alert('ERROR: ' + m.MsgResponse);
+        }
+        ////////////////////////////////////////////////////////////
+        var APP_INFO;
+        var _appInfo = API.GetAppInfo();
+        if (_appInfo && _appInfo.length > 0) APP_INFO = JSON.parse(_appInfo);
+        //f_log('APP_INFO = ' + JSON.stringify(APP_INFO));
+        ////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////
+
+        ////////////////////////////////////////////////////////////
+        (function (window) {
+            /*!
+    * https://github.com/ded/bonzo
+    * classie.has( elem, 'my-class' ) -> true/false
+    * classie.add( elem, 'my-new-class' )
+    * classie.remove( elem, 'my-unwanted-class' )
+    * classie.toggle( elem, 'my-class' )
+    */
+            'use strict';
+            // class helper functions from bonzo https://github.com/ded/bonzo
+            function classReg(className) {
+                return new RegExp("(^|\\s+)" + className + "(\\s+|$)");
+            }
+
+            // classList support for class management altho to be fair, the api sucks because it won't accept multiple classes at once
+            var hasClass, addClass, removeClass;
+
+            if ('classList' in document.documentElement) {
+                hasClass = function (elem, c) {
+                    return elem.classList.contains(c);
+                };
+                addClass = function (elem, c) {
+                    elem.classList.add(c);
+                };
+                removeClass = function (elem, c) {
+                    elem.classList.remove(c);
+                };
+            }
+            else {
+                hasClass = function (elem, c) {
+                    return classReg(c).test(elem.className);
+                };
+                addClass = function (elem, c) {
+                    if (!hasClass(elem, c)) {
+                        elem.className = elem.className + ' ' + c;
+                    }
+                };
+                removeClass = function (elem, c) {
+                    elem.className = elem.className.replace(classReg(c), ' ');
+                };
+            }
+            function toggleClass(elem, c) {
+                var fn = hasClass(elem, c) ? removeClass : addClass;
+                fn(elem, c);
+            }
+            var classie = {
+                // full names
+                hasClass: hasClass,
+                addClass: addClass,
+                removeClass: removeClass,
+                toggleClass: toggleClass,
+                // short names
+                has: hasClass,
+                add: addClass,
+                remove: removeClass,
+                toggle: toggleClass
+            };
+
+            // transport
+            if (typeof define === 'function' && define.amd) {
+                // AMD
+                define(classie);
+            } else if (typeof exports === 'object') {
+                // CommonJS
+                module.exports = classie;
+            } else {
+                // browser global
+                window.classie = classie;
+            }
+
+        })(window);
+        Object.prototype.toggleClass = function (_className) {
+            var el = this;
+            classie.toggleClass(el, _className);
+        };
+        Object.prototype.addClass = function (_className) {
+            var el = this;
+            classie.addClass(el, _className);
+        };
+        Object.prototype.removeClass = function (_className) {
+            var el = this;
+            classie.removeClass(el, _className);
+        };
+        function f_getJson(key) {
+            var url = 'view/' + key + '.json';
+            var json = API.ReadFile(url);
+            if (json.Ok == false && json.Message) {
+                alert('Cannot find file: ' + url);
+                return null;
+            }
+            //console.log(json);
+            return JSON.parse(json);
+        }
+        ////////////////////////////////////////////////////////////
+
+    </script>
+</head>
+<body onload="f_ready()">
+    <div id="header">
+        <input id="txt_search" type="text" placeholder="Search ..." />
+        <button onclick="location.reload()">Reload</button>
+        <br />
+        <button onclick="f_search('star', event)">Star</button>
+        <button onclick="f_search('link', event)">Link</button>
+        <button onclick="f_search('english', event)" class="active">English</button>
+        <button onclick="f_search('tag', event)">Tags</button>
+        <button onclick="f_search('doc', event)">Doc</button>
+        <button onclick="f_search('domain', event)">Media</button>
+        <div id="filter">
+            <div id="filter-link" class="filter-items"></div>
+            <div id="filter-star" class="filter-items"></div>
+            <div id="filter-english" class="filter-items">
+                <input name="filter-english" value="article" type="radio" />
+                <label value="article">Article</label>
+                <input name="filter-english" value="dictionary" checked type="radio" />
+                <label value="dictionary">Dictionary</label>
+                <input name="filter-english" value="grammar" type="radio" />
+                <label value="grammar">Grammar</label>
+            </div>
+            <div id="filter-tag" class="filter-items"></div>
+            <div id="filter-doc" class="filter-items"></div>
+            <div id="filter-media" class="filter-items"></div>
+        </div>
+    </div>
+    <div id="main">
+        <ul id="items-link" class="items"></ul>
+        <ul id="items-star" class="items"></ul>
+        <ul id="items-english-article" class="items"></ul>
+        <ul id="items-english-dictinary" class="items"></ul>
+        <ul id="items-english-grammar" class="items"></ul>
+        <ul id="items-tag" class="items"></ul>
+        <ul id="items-doc" class="items"></ul>
+        <ul id="items-media" class="items"></ul>
+    </div>
+    <div id="footer">
+        <button> < </button>
+        <p id="pager">
+            Item 123-123 | Page 1-35
+        </p>
+        <button> > </button>
+    </div>
+    <script type="text/javascript">
+        var _TAB_SELECT = 'english', _FILTER_SELECT = 'dictionary';
+        ////////////////////////////////////////////////////////////
+
+        function f_event_Init() {
+            var fs = document.querySelectorAll('.filter-items input, .filter-items label');
+            for (var i = 0; i < fs.length; i++) {
+                var el = fs[i];
+                el.addEventListener("click", f_filterSelected_onClick, true);
+            }
+        }
+
+        ////////////////////////////////////////////////////////////
+
+        function f_filterSelected_onClick(event) {
+            var val = event.target.getAttribute('value');
+            //console.log(event.target.tagName + ': click = ' + val);
+
+            if (event.target.tagName == 'LABEL') {
+                var fs = document.querySelectorAll('.filter-items input');
+                for (var i = 0; i < fs.length; i++)
+                    if (fs[i].hasAttribute('checked')) fs[i].checked = false;
+
+                var el = document.querySelector('.filter-items input[value="' + val + '"]');
+                if (el) {
+                    el.checked = true;
+                }
+            }
+        }
+
+        function f_displayTranslate(oTran) {
+            //f_log('SETTING_TRANS: ' + JSON.stringify(oTran));
+            if (oTran && oTran.success == true) {
+                var id = oTran.id, text = oTran.text, mean_vi = oTran.mean_vi;
+
+                var items = document.getElementById('items-english-dictinary');
+                var fs = document.querySelectorAll('#items-english-dictinary li');
+                for (var i = 0; i < fs.length; i++)
+                    fs[i].removeClass('active');
+
+                f_log(id + ': ' + text + ' = ' + mean_vi);
+
+                var li = document.getElementById(id);
+                if (li) {
+                    li.addClass('active');
+                } else {
+                    li = document.createElement('li');
+                    li.id = oTran.id;
+                    li.className = 'link active';
+
+                    var _label = '<label>' + text + '</label>',
+                        _em = '<em>' + mean_vi + '</em>',
+                        _p = '';//'<p>' + it.Text + '</p>',
+                    _span_i = ''; // it.Tags.length > 0 ? ('<span><i>' + it.Tags.split(',').join('</i><i>') + '</i></span>') : '';
+
+                    li.innerHTML = _label + _em + _p + _span_i;
+
+                    if (items) {
+                        items.style.display = 'inline-block';
+                        items.appendChild(li);
+                    }
+                }
+            }
+        }
+
+        ////////////////////////////////////////////////////////////
+        var _openUrl = function (url) {
+            //console.log('-> ' + url);
+            API.Go(url);
+        };
+
+        ////////////////////////////////////////////////////////////
+
+        function f_ready() {
+
+            f_event_Init();
+
+            ////////////////////////////////////////////////////////////
+
+            var data;
+
+            //data = f_getJson('search');
+            data = {
+                "Ok": true,
+                "Keyword": "Learn English",
+                "Link": {
+                    "Total": 123,
+                    "Count": 99,
+                    "pageNumber": 1,
+                    "pageSize": 10,
+                    "Result": []
+                },
+                "English": {
+                    "Total": 123,
+                    "Count": 99,
+                    "pageNumber": 1,
+                    "pageSize": 10,
+                    "Result": []
+                },
+                "Media": {
+                    "Total": 123,
+                    "Count": 99,
+                    "pageNumber": 1,
+                    "pageSize": 10,
+                    "Result": []
+                }
+            };
+
+            // #region [LINK]
+
+            //var rs_link = data.Link;
+            //for (var i = 0; i < rs_link.pageSize; i++) rs_link.Result.push({ "Type": "link", "Url": "https://dictionary.cambridge.org/grammar/british-grammar/above-or-over", "Tags": "grammar, above, over", "Title": "Above or over?", "Text": "When we use above as a preposition, it means ‘higher than’. Its meaning is close to that of the preposition over. In the following sentences, over can be used instead of above" });
+            //if (rs_link) {
+            //    var items = document.getElementById('items-link');
+            //    for (var i = 0; i < rs_link.pageSize; i++) {
+            //        var it = rs_link.Result[i],
+            //            li = document.createElement('li'),
+            //            domain = '<em>' + it.Url.split('/')[2] + '</em>',
+            //            tags = '';
+            //        li.className = it.Type;
+            //        //li.onclick = function () { _openUrl(it.Url); };
+            //        if (it.Tags.length > 0) tags = '<span><i>' + it.Tags.split(',').join('</i><i>') + '</i></span>';
+            //        li.innerHTML = '<label onclick="_openUrl(\'' + it.Url + '\')">' + it.Title + '</label>' + domain + '<p>' + it.Text + '</p>' + tags;
+
+            //        items.appendChild(li);
+            //    }
+            //}
+
+            // #endregion
+
+            // #region [ENGLISH]
+
+            //var rs_english = data.English;
+            //for (var i = 0; i < rs_english.pageSize; i++) rs_english.Result.push({ "Type": "english", "Url": "https://dictionary.cambridge.org/grammar/british-grammar/above-or-over", "Tags": "grammar, above, over", "Title": "Above or over?", "Text": "When we use above as a preposition, it means ‘higher than’. Its meaning is close to that of the preposition over. In the following sentences, over can be used instead of above" });
+            //if (rs_english) {
+            //    var items = document.getElementById('items-english');
+            //    for (var i = 0; i < rs_english.pageSize; i++) {
+            //        var it = rs_english.Result[i],
+            //            li = document.createElement('li'),
+            //            domain = '<em>' + it.Url.split('/')[2] + '</em>',
+            //            tags = '';
+            //        li.className = it.Type;
+            //        //li.onclick = function () { _openUrl(it.Url); };
+            //        if (it.Tags.length > 0) tags = '<span><i>' + it.Tags.split(',').join('</i><i>') + '</i></span>';
+            //        li.innerHTML = '<label onclick="_openUrl(\'' + it.Url + '\')">' + it.Title + '</label>' + domain + '<p>' + it.Text + '</p>' + tags;
+            //        items.appendChild(li);
+            //    }
+            //}
+
+            // #endregion
+
+            // #region [MEDIA]
+
+            //var rs_media = data.Media;
+            //for (var i = 0; i < rs_media.pageSize; i++) rs_media.Result.push({ "Type": "media", "Url": "https://dictionary.cambridge.org/grammar/british-grammar/above-or-over", "Tags": "grammar, above, over", "Title": "Above or over?", "Text": "When we use above as a preposition, it means ‘higher than’. Its meaning is close to that of the preposition over. In the following sentences, over can be used instead of above" });
+            //if (rs_media) {
+            //    var items = document.getElementById('items-media');
+            //    for (var i = 0; i < rs_media.pageSize; i++) {
+            //        var it = rs_media.Result[i],
+            //            li = document.createElement('li'),
+            //            domain = '<em>' + it.Url.split('/')[2] + '</em>',
+            //            tags = '';
+            //        li.className = it.Type;
+            //        //li.onclick = function () { _openUrl(it.Url); };
+            //        if (it.Tags.length > 0) tags = '<span><i>' + it.Tags.split(',').join('</i><i>') + '</i></span>';
+            //        li.innerHTML = '<label onclick="_openUrl(\'' + it.Url + '\')">' + it.Title + '</label>' + domain + '<p>' + it.Text + '</p>' + tags;
+            //        items.appendChild(li);
+            //    }
+            //}
+
+            // #endregion
+
+            var tab = document.getElementById('items-' + _TAB_SELECT);
+            if (tab) tab.style.display = 'block';
+        }
+
+        function f_search(type, event) {
+            var el = event.target;
+
+            var bs = document.querySelectorAll('#header button');
+            for (var i = 0; i < bs.length; i++) bs[i].className = '';
+            el.toggleClass('active');
+
+            var elKey = document.getElementById('txt_search');
+            var keyword = elKey.value;
+
+            ////$('#header button').removeClass('active');
+            ////$('#header button.' + type.toLowerCase()).addClass('active');
+
+            //switch (type) {
+            //    case 'all':
+            //        break;
+            //    case 'domain':
+            //        break;
+            //    case 'tag':
+            //        break;
+            //    case 'star':
+            //        break;
+            //    default:
+            //        break;
+            //}
+
+            console.log(type + ':' + keyword);
+        }
+
+
+    </script>
+    <style type="text/css">
+        *, html {
+            padding: 0;
+            margin: 0;
+            font-family: arial;
+        }
+
+        body {
+        }
+
+        #main::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        #main::-webkit-scrollbar-track {
+            -webkit-box-shadow: none;
+            border-radius: 0px;
+        }
+
+        #main::-webkit-scrollbar-thumb {
+            border-radius: 0px;
+            -webkit-box-shadow: none;
+            background-color: #ddd;
+        }
+
+        #header {
+            height: 83px;
+            background-color: #fff;
+            text-align: center;
+            padding: 0;
+            position: fixed;
+            width: 100%;
+            z-index: 1;
+        }
+
+            #header input[type="text"] {
+                width: 50%;
+                border: 1px solid #ccc;
+                height: 19px;
+                background-color: #fafafa;
+                padding: 2px 10px;
+            }
+
+            #header button {
+                border: none;
+                margin-top: 9px;
+                width: 44px;
+                color: gray;
+                padding-bottom: 3px;
+                background-color: #fff;
+                height: 22px;
+            }
+
+                #header button.active {
+                    border: none;
+                    color: #333;
+                    border-bottom: 1px solid orange;
+                }
+
+        #main {
+            width: 100%;
+            top: 83px;
+            position: fixed;
+            bottom: 30px;
+            display: inline-block;
+            z-index: 0;
+            overflow: auto;
+            padding-top: 10px;
+        }
+
+        #footer {
+            height: 25px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            padding: 5px 0 0 0;
+        }
+
+            #footer button {
+                width: 20%;
+                border: none;
+                background-color: transparent;
+                font-weight: bold;
+                font-size: 0.7em;
+                color: #777;
+            }
+
+        #pager {
+            width: 55%;
+            font-size: 0.8em;
+            display: inline-block;
+            text-align: center;
+            color: #444;
+        }
+
+        /************************************/
+        /*FILTER*/
+
+        #filter {
+            font-size: 0.9em;
+            padding-top: 6px;
+        }
+
+        .filter-items {
+            display: inline-block;
+            height: 19px;
+        }
+
+            .filter-items input[type="radio"] {
+                margin-top: 4px;
+                float: left;
+                margin-right: 3px;
+                margin-left: 9px;
+            }
+
+            .filter-items label {
+                line-height: 20px;
+                float: left;
+            }
+
+        /************************************/
+        /*ITEMS*/
+
+        ul.items {
+            list-style: none;
+            display: none;
+            width: 100%;
+        }
+
+            ul.items li:first-child {
+                border-top: none;
+            }
+        
+            ul.items li {
+                border-top: 1px solid #ddd;
+                list-style: none;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+
+                ul.items li:hover {
+                    background-color:orange;
+                }
+
+            ul.items li.active {
+                background-color: #ddd;
+            }
+
+                /************************************/
+                /*LINK*/
+
+                ul.items li.link label:hover,
+                ul.items li.link em:hover,
+                ul.items li.link span i:hover {
+                    color: dodgerblue;
+                    text-decoration: underline;
+                    cursor: pointer;
+                }
+
+                ul.items li.link label,
+                ul.items li.link em,
+                ul.items li.link p,
+                ul.items li.link span {
+                    display: inline-block;
+                    width: 94%;
+                    padding-left: 3%;
+                    padding-right: 3%;
+                }
+
+                ul.items li.link label {
+                    font-weight: bold;
+                    font-size: 1em;
+                }
+
+                ul.items li.link span {
+                    text-align: right;
+                }
+
+                    ul.items li.link span i {
+                        border-right: 1px solid #ddd;
+                        font-style: normal;
+                        line-height: 0px;
+                        padding: 0 3px 0 0;
+                        color: #999;
+                        font-size: 0.9em;
+                    }
+
+                        ul.items li.link span i:last-of-type {
+                            border-right: none;
+                        }
+
+                ul.items li.link p {
+                    font-size: 0.9em;
+                    line-height: 1.5em;
+                }
+
+                ul.items li.link em {
+                    text-align: right;
+                    color: #999;
+                    font-size: 0.8em;
+                }
+
+                /************************************/
+                /*ENGLISH*/
+
+                ul.items li.english label:hover,
+                ul.items li.english em:hover,
+                ul.items li.english span i:hover {
+                    color: dodgerblue;
+                    text-decoration: underline;
+                    cursor: pointer;
+                }
+
+                ul.items li.english label,
+                ul.items li.english em,
+                ul.items li.english p,
+                ul.items li.english span {
+                    display: inline-block;
+                    width: 94%;
+                    padding-left: 3%;
+                    padding-right: 3%;
+                }
+
+                ul.items li.english label {
+                    font-weight: bold;
+                    font-size: 1em;
+                }
+
+                ul.items li.english span {
+                    text-align: right;
+                }
+
+                    ul.items li.english span i {
+                        border-right: 1px solid #ddd;
+                        font-style: normal;
+                        line-height: 0px;
+                        padding: 0 3px 0 0;
+                        color: #999;
+                        font-size: 0.9em;
+                    }
+
+                        ul.items li.english span i:last-of-type {
+                            border-right: none;
+                        }
+
+                ul.items li.english p {
+                    font-size: 0.9em;
+                    line-height: 1.5em;
+                }
+
+                ul.items li.english em {
+                    text-align: right;
+                    color: #999;
+                    font-size: 0.8em;
+                }
+
+        /************************************/
+        /*LINK*/
+    </style>
+
+</body>
+</html>

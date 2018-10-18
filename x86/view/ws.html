@@ -1,0 +1,34 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <script type="text/javascript">
+        var _WEBSOCKET, _WEBSOCKET_OPEN = false;
+        if ("WebSocket" in window) {
+            _WEBSOCKET = new WebSocket("ws://127.0.0.1:56789");
+            _WEBSOCKET.onopen = function () {
+                _WEBSOCKET_OPEN = true;
+                ws.send("Message to send");
+            };
+            _WEBSOCKET.onmessage = function (evt) {
+                var data = evt.data;
+                console.log("Message is received: " + data);
+            };
+            _WEBSOCKET.onclose = function () {
+                _WEBSOCKET_OPEN = false;
+            };
+            _WEBSOCKET.onerror = function () {
+                _WEBSOCKET_OPEN = false;
+            };
+        } else {
+            // The browser doesn't support WebSocket
+        }
+
+    </script>
+</head>
+<body>
+    <div id="sse">
+        <a href="javascript:WebSocketTest()">Run WebSocket</a>
+    </div>
+
+</body>
+</html>

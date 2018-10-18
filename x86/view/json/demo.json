@@ -1,0 +1,806 @@
+{
+  "status": "success",
+  "total": 3700,
+  "records": [
+    {
+      "recid": "301",
+      "userid": "301",
+      "fname": "Bill",
+      "lname": "Sannikov",
+      "email": "bsannikov@mail.com",
+      "manager": "Homchan"
+    },
+    {
+      "recid": "302",
+      "userid": "302",
+      "fname": "Jack",
+      "lname": "Mascovits",
+      "email": "jmascovits@mail.com",
+      "manager": "Peterson"
+    },
+    {
+      "recid": "303",
+      "userid": "303",
+      "fname": "Gloria",
+      "lname": "Vasiliev",
+      "email": "gvasiliev@mail.com",
+      "manager": "Vasiliev"
+    },
+    {
+      "recid": "304",
+      "userid": "304",
+      "fname": "Sue",
+      "lname": "Behe",
+      "email": "sbehe@mail.com",
+      "manager": "Peterson"
+    },
+    {
+      "recid": "305",
+      "userid": "305",
+      "fname": "John",
+      "lname": "Cuban",
+      "email": "jcuban@mail.com",
+      "manager": "Ivanov"
+    },
+    {
+      "recid": "306",
+      "userid": "306",
+      "fname": "Rose",
+      "lname": "Homchan",
+      "email": "rhomchan@mail.com",
+      "manager": "Behe"
+    },
+    {
+      "recid": "307",
+      "userid": "307",
+      "fname": "Emma",
+      "lname": "Rene",
+      "email": "erene@mail.com",
+      "manager": "Smirnov"
+    },
+    {
+      "recid": "308",
+      "userid": "308",
+      "fname": "Rose",
+      "lname": "Rene",
+      "email": "rrene@mail.com",
+      "manager": "Vasiliev"
+    },
+    {
+      "recid": "309",
+      "userid": "309",
+      "fname": "Gloria",
+      "lname": "Sannikov",
+      "email": "gsannikov@mail.com",
+      "manager": "Duck"
+    },
+    {
+      "recid": "310",
+      "userid": "310",
+      "fname": "Rose",
+      "lname": "Gould",
+      "email": "rgould@mail.com",
+      "manager": "Stalone"
+    },
+    {
+      "recid": "311",
+      "userid": "311",
+      "fname": "Rose",
+      "lname": "Cruz",
+      "email": "rcruz@mail.com",
+      "manager": "Green"
+    },
+    {
+      "recid": "312",
+      "userid": "312",
+      "fname": "Frank",
+      "lname": "Vasiliev",
+      "email": "fvasiliev@mail.com",
+      "manager": "Vasiliev"
+    },
+    {
+      "recid": "313",
+      "userid": "313",
+      "fname": "Divia",
+      "lname": "Smirnov",
+      "email": "dsmirnov@mail.com",
+      "manager": "Gould"
+    },
+    {
+      "recid": "314",
+      "userid": "314",
+      "fname": "Vitali",
+      "lname": "Duck",
+      "email": "vduck@mail.com",
+      "manager": "Silver"
+    },
+    {
+      "recid": "315",
+      "userid": "315",
+      "fname": "Katie",
+      "lname": "Behe",
+      "email": "kbehe@mail.com",
+      "manager": "Ivanov"
+    },
+    {
+      "recid": "316",
+      "userid": "316",
+      "fname": "Olivia",
+      "lname": "Silver",
+      "email": "osilver@mail.com",
+      "manager": "Green"
+    },
+    {
+      "recid": "317",
+      "userid": "317",
+      "fname": "Sue",
+      "lname": "Cruz",
+      "email": "scruz@mail.com",
+      "manager": "Behe"
+    },
+    {
+      "recid": "318",
+      "userid": "318",
+      "fname": "Divia",
+      "lname": "Cruz",
+      "email": "dcruz@mail.com",
+      "manager": "Gould"
+    },
+    {
+      "recid": "319",
+      "userid": "319",
+      "fname": "Vitali",
+      "lname": "Sidorov",
+      "email": "vsidorov@mail.com",
+      "manager": "Sannikov"
+    },
+    {
+      "recid": "320",
+      "userid": "320",
+      "fname": "Jack",
+      "lname": "Twist",
+      "email": "jtwist@mail.com",
+      "manager": "Petrov"
+    },
+    {
+      "recid": "321",
+      "userid": "321",
+      "fname": "Sue",
+      "lname": "Twist",
+      "email": "stwist@mail.com",
+      "manager": "Green"
+    },
+    {
+      "recid": "322",
+      "userid": "322",
+      "fname": "Olivia",
+      "lname": "Behe",
+      "email": "obehe@mail.com",
+      "manager": "Smirnov"
+    },
+    {
+      "recid": "323",
+      "userid": "323",
+      "fname": "Emma",
+      "lname": "Sidorov",
+      "email": "esidorov@mail.com",
+      "manager": "Cruz"
+    },
+    {
+      "recid": "324",
+      "userid": "324",
+      "fname": "Emma",
+      "lname": "Vasiliev",
+      "email": "evasiliev@mail.com",
+      "manager": "Sidorov"
+    },
+    {
+      "recid": "325",
+      "userid": "325",
+      "fname": "Bill",
+      "lname": "Homchan",
+      "email": "bhomchan@mail.com",
+      "manager": "Cuban"
+    },
+    {
+      "recid": "326",
+      "userid": "326",
+      "fname": "April",
+      "lname": "Silver",
+      "email": "asilver@mail.com",
+      "manager": "Sannikov"
+    },
+    {
+      "recid": "327",
+      "userid": "327",
+      "fname": "Thomas",
+      "lname": "Johnson",
+      "email": "tjohnson@mail.com",
+      "manager": "Silver"
+    },
+    {
+      "recid": "328",
+      "userid": "328",
+      "fname": "Amy",
+      "lname": "Mascovits",
+      "email": "amascovits@mail.com",
+      "manager": "Vasiliev"
+    },
+    {
+      "recid": "329",
+      "userid": "329",
+      "fname": "Amy",
+      "lname": "Welldo",
+      "email": "awelldo@mail.com",
+      "manager": "Behe"
+    },
+    {
+      "recid": "330",
+      "userid": "330",
+      "fname": "Gloria",
+      "lname": "Homchan",
+      "email": "ghomchan@mail.com",
+      "manager": "Cuban"
+    },
+    {
+      "recid": "331",
+      "userid": "331",
+      "fname": "Rose",
+      "lname": "Peterson",
+      "email": "rpeterson@mail.com",
+      "manager": "Welldo"
+    },
+    {
+      "recid": "332",
+      "userid": "332",
+      "fname": "Gloria",
+      "lname": "Smirnov",
+      "email": "gsmirnov@mail.com",
+      "manager": "Cruz"
+    },
+    {
+      "recid": "333",
+      "userid": "333",
+      "fname": "Peter",
+      "lname": "Rene",
+      "email": "prene@mail.com",
+      "manager": "Johnson"
+    },
+    {
+      "recid": "334",
+      "userid": "334",
+      "fname": "Gloria",
+      "lname": "Duck",
+      "email": "gduck@mail.com",
+      "manager": "Stalone"
+    },
+    {
+      "recid": "335",
+      "userid": "335",
+      "fname": "Sue",
+      "lname": "Sidorov",
+      "email": "ssidorov@mail.com",
+      "manager": "Petrov"
+    },
+    {
+      "recid": "336",
+      "userid": "336",
+      "fname": "Amy",
+      "lname": "Smirnov",
+      "email": "asmirnov@mail.com",
+      "manager": "Rene"
+    },
+    {
+      "recid": "337",
+      "userid": "337",
+      "fname": "Gloria",
+      "lname": "Rene",
+      "email": "grene@mail.com",
+      "manager": "Petrov"
+    },
+    {
+      "recid": "338",
+      "userid": "338",
+      "fname": "Thomas",
+      "lname": "Mascovits",
+      "email": "tmascovits@mail.com",
+      "manager": "Silver"
+    },
+    {
+      "recid": "339",
+      "userid": "339",
+      "fname": "Sue",
+      "lname": "Ivanov",
+      "email": "sivanov@mail.com",
+      "manager": "Stalone"
+    },
+    {
+      "recid": "340",
+      "userid": "340",
+      "fname": "Peter",
+      "lname": "Rene",
+      "email": "prene@mail.com",
+      "manager": "Petrov"
+    },
+    {
+      "recid": "341",
+      "userid": "341",
+      "fname": "Divia",
+      "lname": "Rene",
+      "email": "drene@mail.com",
+      "manager": "Petrov"
+    },
+    {
+      "recid": "342",
+      "userid": "342",
+      "fname": "Olivia",
+      "lname": "Silver",
+      "email": "osilver@mail.com",
+      "manager": "Sidorov"
+    },
+    {
+      "recid": "343",
+      "userid": "343",
+      "fname": "April",
+      "lname": "Rene",
+      "email": "arene@mail.com",
+      "manager": "Homchan"
+    },
+    {
+      "recid": "344",
+      "userid": "344",
+      "fname": "Vitali",
+      "lname": "Silver",
+      "email": "vsilver@mail.com",
+      "manager": "Smirnov"
+    },
+    {
+      "recid": "345",
+      "userid": "345",
+      "fname": "Bill",
+      "lname": "Johnson",
+      "email": "bjohnson@mail.com",
+      "manager": "Welldo"
+    },
+    {
+      "recid": "346",
+      "userid": "346",
+      "fname": "Jack",
+      "lname": "Welldo",
+      "email": "jwelldo@mail.com",
+      "manager": "Rene"
+    },
+    {
+      "recid": "347",
+      "userid": "347",
+      "fname": "April",
+      "lname": "Stalone",
+      "email": "astalone@mail.com",
+      "manager": "Johnson"
+    },
+    {
+      "recid": "348",
+      "userid": "348",
+      "fname": "Katie",
+      "lname": "Smirnov",
+      "email": "ksmirnov@mail.com",
+      "manager": "Green"
+    },
+    {
+      "recid": "349",
+      "userid": "349",
+      "fname": "Rose",
+      "lname": "Vasiliev",
+      "email": "rvasiliev@mail.com",
+      "manager": "Rene"
+    },
+    {
+      "recid": "350",
+      "userid": "350",
+      "fname": "Divia",
+      "lname": "Mascovits",
+      "email": "dmascovits@mail.com",
+      "manager": "Petrov"
+    },
+    {
+      "recid": "351",
+      "userid": "351",
+      "fname": "Thomas",
+      "lname": "Sannikov",
+      "email": "tsannikov@mail.com",
+      "manager": "Sannikov"
+    },
+    {
+      "recid": "352",
+      "userid": "352",
+      "fname": "April",
+      "lname": "Vasiliev",
+      "email": "avasiliev@mail.com",
+      "manager": "Johnson"
+    },
+    {
+      "recid": "353",
+      "userid": "353",
+      "fname": "Sergei",
+      "lname": "Sidorov",
+      "email": "ssidorov@mail.com",
+      "manager": "Sannikov"
+    },
+    {
+      "recid": "354",
+      "userid": "354",
+      "fname": "April",
+      "lname": "Vasiliev",
+      "email": "avasiliev@mail.com",
+      "manager": "Rene"
+    },
+    {
+      "recid": "355",
+      "userid": "355",
+      "fname": "Sue",
+      "lname": "Petrov",
+      "email": "spetrov@mail.com",
+      "manager": "Sannikov"
+    },
+    {
+      "recid": "356",
+      "userid": "356",
+      "fname": "Rose",
+      "lname": "Gould",
+      "email": "rgould@mail.com",
+      "manager": "Gould"
+    },
+    {
+      "recid": "357",
+      "userid": "357",
+      "fname": "Katie",
+      "lname": "Behe",
+      "email": "kbehe@mail.com",
+      "manager": "Homchan"
+    },
+    {
+      "recid": "358",
+      "userid": "358",
+      "fname": "Sue",
+      "lname": "Peterson",
+      "email": "speterson@mail.com",
+      "manager": "Green"
+    },
+    {
+      "recid": "359",
+      "userid": "359",
+      "fname": "Vitali",
+      "lname": "Gould",
+      "email": "vgould@mail.com",
+      "manager": "Cuban"
+    },
+    {
+      "recid": "360",
+      "userid": "360",
+      "fname": "John",
+      "lname": "Homchan",
+      "email": "jhomchan@mail.com",
+      "manager": "Rene"
+    },
+    {
+      "recid": "361",
+      "userid": "361",
+      "fname": "Olivia",
+      "lname": "Smirnov",
+      "email": "osmirnov@mail.com",
+      "manager": "Smirnov"
+    },
+    {
+      "recid": "362",
+      "userid": "362",
+      "fname": "Frank",
+      "lname": "Sannikov",
+      "email": "fsannikov@mail.com",
+      "manager": "Duck"
+    },
+    {
+      "recid": "363",
+      "userid": "363",
+      "fname": "Bill",
+      "lname": "Stalone",
+      "email": "bstalone@mail.com",
+      "manager": "Sannikov"
+    },
+    {
+      "recid": "364",
+      "userid": "364",
+      "fname": "Jack",
+      "lname": "Vasiliev",
+      "email": "jvasiliev@mail.com",
+      "manager": "Welldo"
+    },
+    {
+      "recid": "365",
+      "userid": "365",
+      "fname": "Rose",
+      "lname": "Welldo",
+      "email": "rwelldo@mail.com",
+      "manager": "Silver"
+    },
+    {
+      "recid": "366",
+      "userid": "366",
+      "fname": "Peter",
+      "lname": "Welldo",
+      "email": "pwelldo@mail.com",
+      "manager": "Silver"
+    },
+    {
+      "recid": "367",
+      "userid": "367",
+      "fname": "John",
+      "lname": "Green",
+      "email": "jgreen@mail.com",
+      "manager": "Duck"
+    },
+    {
+      "recid": "368",
+      "userid": "368",
+      "fname": "Thomas",
+      "lname": "Peterson",
+      "email": "tpeterson@mail.com",
+      "manager": "Duck"
+    },
+    {
+      "recid": "369",
+      "userid": "369",
+      "fname": "Divia",
+      "lname": "Rene",
+      "email": "drene@mail.com",
+      "manager": "Duck"
+    },
+    {
+      "recid": "370",
+      "userid": "370",
+      "fname": "April",
+      "lname": "Sannikov",
+      "email": "asannikov@mail.com",
+      "manager": "Cuban"
+    },
+    {
+      "recid": "371",
+      "userid": "371",
+      "fname": "Rose",
+      "lname": "Vasiliev",
+      "email": "rvasiliev@mail.com",
+      "manager": "Cruz"
+    },
+    {
+      "recid": "372",
+      "userid": "372",
+      "fname": "Olivia",
+      "lname": "Peterson",
+      "email": "opeterson@mail.com",
+      "manager": "Green"
+    },
+    {
+      "recid": "373",
+      "userid": "373",
+      "fname": "Katie",
+      "lname": "Mascovits",
+      "email": "kmascovits@mail.com",
+      "manager": "Sidorov"
+    },
+    {
+      "recid": "374",
+      "userid": "374",
+      "fname": "Thomas",
+      "lname": "Homchan",
+      "email": "thomchan@mail.com",
+      "manager": "Behe"
+    },
+    {
+      "recid": "375",
+      "userid": "375",
+      "fname": "Vitali",
+      "lname": "Vasiliev",
+      "email": "vvasiliev@mail.com",
+      "manager": "Mascovits"
+    },
+    {
+      "recid": "376",
+      "userid": "376",
+      "fname": "April",
+      "lname": "Cruz",
+      "email": "acruz@mail.com",
+      "manager": "Sidorov"
+    },
+    {
+      "recid": "377",
+      "userid": "377",
+      "fname": "Emma",
+      "lname": "Duck",
+      "email": "educk@mail.com",
+      "manager": "Ivanov"
+    },
+    {
+      "recid": "378",
+      "userid": "378",
+      "fname": "Divia",
+      "lname": "Vasiliev",
+      "email": "dvasiliev@mail.com",
+      "manager": "Smirnov"
+    },
+    {
+      "recid": "379",
+      "userid": "379",
+      "fname": "Thomas",
+      "lname": "Rene",
+      "email": "trene@mail.com",
+      "manager": "Cuban"
+    },
+    {
+      "recid": "380",
+      "userid": "380",
+      "fname": "John",
+      "lname": "Gould",
+      "email": "jgould@mail.com",
+      "manager": "Stalone"
+    },
+    {
+      "recid": "381",
+      "userid": "381",
+      "fname": "Frank",
+      "lname": "Gould",
+      "email": "fgould@mail.com",
+      "manager": "Rene"
+    },
+    {
+      "recid": "382",
+      "userid": "382",
+      "fname": "Peter",
+      "lname": "Ivanov",
+      "email": "pivanov@mail.com",
+      "manager": "Rene"
+    },
+    {
+      "recid": "383",
+      "userid": "383",
+      "fname": "Vitali",
+      "lname": "Smirnov",
+      "email": "vsmirnov@mail.com",
+      "manager": "Duck"
+    },
+    {
+      "recid": "384",
+      "userid": "384",
+      "fname": "Sue",
+      "lname": "Cruz",
+      "email": "scruz@mail.com",
+      "manager": "Smirnov"
+    },
+    {
+      "recid": "385",
+      "userid": "385",
+      "fname": "Sergei",
+      "lname": "Mascovits",
+      "email": "smascovits@mail.com",
+      "manager": "Duck"
+    },
+    {
+      "recid": "386",
+      "userid": "386",
+      "fname": "Katie",
+      "lname": "Stalone",
+      "email": "kstalone@mail.com",
+      "manager": "Sidorov"
+    },
+    {
+      "recid": "387",
+      "userid": "387",
+      "fname": "Divia",
+      "lname": "Cuban",
+      "email": "dcuban@mail.com",
+      "manager": "Ivanov"
+    },
+    {
+      "recid": "388",
+      "userid": "388",
+      "fname": "Emma",
+      "lname": "Behe",
+      "email": "ebehe@mail.com",
+      "manager": "Duck"
+    },
+    {
+      "recid": "389",
+      "userid": "389",
+      "fname": "Katie",
+      "lname": "Smirnov",
+      "email": "ksmirnov@mail.com",
+      "manager": "Green"
+    },
+    {
+      "recid": "390",
+      "userid": "390",
+      "fname": "Sue",
+      "lname": "Sidorov",
+      "email": "ssidorov@mail.com",
+      "manager": "Duck"
+    },
+    {
+      "recid": "391",
+      "userid": "391",
+      "fname": "Vitali",
+      "lname": "Gould",
+      "email": "vgould@mail.com",
+      "manager": "Welldo"
+    },
+    {
+      "recid": "392",
+      "userid": "392",
+      "fname": "John",
+      "lname": "Johnson",
+      "email": "jjohnson@mail.com",
+      "manager": "Gould"
+    },
+    {
+      "recid": "393",
+      "userid": "393",
+      "fname": "Peter",
+      "lname": "Johnson",
+      "email": "pjohnson@mail.com",
+      "manager": "Smirnov"
+    },
+    {
+      "recid": "394",
+      "userid": "394",
+      "fname": "Rose",
+      "lname": "Stalone",
+      "email": "rstalone@mail.com",
+      "manager": "Gould"
+    },
+    {
+      "recid": "395",
+      "userid": "395",
+      "fname": "Olivia",
+      "lname": "Gould",
+      "email": "ogould@mail.com",
+      "manager": "Mascovits"
+    },
+    {
+      "recid": "396",
+      "userid": "396",
+      "fname": "Katie",
+      "lname": "Rene",
+      "email": "krene@mail.com",
+      "manager": "Ivanov"
+    },
+    {
+      "recid": "397",
+      "userid": "397",
+      "fname": "Divia",
+      "lname": "Cruz",
+      "email": "dcruz@mail.com",
+      "manager": "Cruz"
+    },
+    {
+      "recid": "398",
+      "userid": "398",
+      "fname": "Gloria",
+      "lname": "Twist",
+      "email": "gtwist@mail.com",
+      "manager": "Stalone"
+    },
+    {
+      "recid": "399",
+      "userid": "399",
+      "fname": "Amy",
+      "lname": "Vasiliev",
+      "email": "avasiliev@mail.com",
+      "manager": "Silver"
+    },
+    {
+      "recid": "400",
+      "userid": "400",
+      "fname": "Sergei",
+      "lname": "Gould",
+      "email": "sgould@mail.com",
+      "manager": "Smirnov"
+    }
+  ]
+}
