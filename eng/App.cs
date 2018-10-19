@@ -43,7 +43,7 @@ namespace eng
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new fLocal());
+            Application.Run(new fBrowser());
 
             CEF.Shutdown();
         }

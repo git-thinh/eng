@@ -1,2 +1,22 @@
 
 x86/debug.log
+.vs/eng/v15/Server/sqlite3/storage.ide
+.vs/eng/v15/Server/sqlite3/db.lock
+.vs/eng/v15/.suo
+eng/bin/Debug/eng.exe
+eng/bin/Debug/eng.pdb
+eng/obj/Debug/eng.csproj.CoreCompileInputs.cache
+eng/obj/Debug/eng.csproj.FileListAbsolute.txt
+eng/obj/Debug/eng.csproj.GenerateResource.Cache
+eng/obj/Debug/eng.csprojResolveAssemblyReference.cache
+eng/obj/Debug/eng.exe
+eng/obj/Debug/eng.pdb
+eng/obj/Debug/eng.Properties.Resources.resources
+eng/obj/x86/Debug/eng.csproj.CoreCompileInputs.cache
+eng/obj/x86/Debug/eng.csproj.FileListAbsolute.txt
+eng/obj/x86/Debug/eng.csproj.GenerateResource.Cache
+eng/obj/x86/Debug/eng.csprojResolveAssemblyReference.cache
+eng/obj/x86/Debug/eng.exe
+eng/obj/x86/Debug/eng.pdb
+eng/obj/x86/Debug/eng.Properties.Resources.resources
+x86/eng.pdb

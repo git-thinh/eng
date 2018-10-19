@@ -30,8 +30,14 @@ namespace eng
             ui_browser.ContextMenu = cm;
             ui_browser.MenuHandler = new BrowserMenuContextHandler();
 
-            this.FormClosing += (se, ev) => {
+            this.Shown += (se, ev) => {
+                this.Top = 0;
+                this.Left = 0;
+                this.Width = 800;
+                this.Height = Screen.PrimaryScreen.WorkingArea.Height;
+            };
 
+            this.FormClosing += (se, ev) => { 
             };
         }
 
