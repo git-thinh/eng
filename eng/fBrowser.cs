@@ -14,12 +14,20 @@ namespace eng
 
         public fBrowser()
         {
+            this.Width = 800;
+            this.Height = Screen.PrimaryScreen.WorkingArea.Height;
+
             //URL = "res://local/view/ajax_api.html";
             URL = "https://dictionary.cambridge.org/grammar/british-grammar/";
 
             ui_browser = new WebView("about:blank", new CefSharp.BrowserSettings()
             {
                 WebSecurityDisabled = true,
+                DefaultEncoding = "utf-8",
+                FileAccessFromFileUrlsAllowed = true,
+                WebGlDisabled = true,
+                UniversalAccessFromFileUrlsAllowed = true,
+                TabToLinksDisabled = true
             })
             { Dock = DockStyle.Fill };
             this.Controls.Add(ui_browser);
@@ -32,14 +40,14 @@ namespace eng
             ui_browser.ContextMenu = cm;
             ui_browser.MenuHandler = new BrowserMenuContextHandler();
 
-            this.Shown += (se, ev) => {
+            this.Shown += (se, ev) =>
+            {
                 this.Top = 0;
                 this.Left = 0;
-                this.Width = 800;
-                this.Height = Screen.PrimaryScreen.WorkingArea.Height;
             };
 
-            this.FormClosing += (se, ev) => {
+            this.FormClosing += (se, ev) =>
+            {
             };
         }
 

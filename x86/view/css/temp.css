@@ -1,0 +1,47 @@
+
+*, html {
+}
+
+#___canvas {
+    display: none;
+}
+
+body {
+    font-size: 1.5em;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 0 3px 0 15px;
+}
+
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+h1 {
+    margin: 0px 0 10px 0;
+    text-align: center;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: none;
+    border-radius: 0px;
+    background-color: #fafafa;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 0px;
+    -webkit-box-shadow: none;
+    background-color: #ccc;
+}
+
+div, p, li {
+    line-height: 35px;    
+}

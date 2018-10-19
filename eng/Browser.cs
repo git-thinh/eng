@@ -68,6 +68,11 @@ namespace eng
 
     public class HttpHandler : ISchemeHandler
     {
+        #region
+
+        string _temp_head = string.Empty;
+        string _temp_end = string.Empty;
+
         readonly List<string> DOMAIN_LIST;
 
         readonly ConcurrentDictionary<string, string> CACHE;
@@ -79,9 +84,14 @@ namespace eng
         readonly ConcurrentDictionary<string, List<int>> DOMAIN_LINK;
         readonly ConcurrentDictionary<string, List<int>> KEY_INDEX;
         readonly ConcurrentDictionary<string, string> TRANSLATE;
+        
+        #endregion
 
         public HttpHandler()
         {
+            if (File.Exists("view/temp-head.html")) _temp_head = File.ReadAllText("view/temp-head.html"); else _temp_head = string.Empty;
+            if (File.Exists("view/temp-end.html")) _temp_end = File.ReadAllText("view/temp-end.html"); else _temp_end = string.Empty;
+
             if (Directory.Exists("cache")) DOMAIN_LIST = Directory.GetDirectories("cache").Select(x => x.Substring(6)).ToList();
             else DOMAIN_LIST = new List<string>();
 
@@ -96,10 +106,8 @@ namespace eng
             DOMAIN_LINK = new ConcurrentDictionary<string, List<int>>();
             TIME_VIEW_LINK = new ConcurrentDictionary<int, int>();
             KEY_INDEX = new ConcurrentDictionary<string, List<int>>();
-
         }
-
-
+        
         public string f_link_getHtmlCache(string url)
         {
             if (CACHE.ContainsKey(url))
@@ -268,7 +276,47 @@ namespace eng
         public bool ProcessRequestAsync(IRequest request, SchemeHandlerResponse response, OnRequestCompletedHandler requestCompletedCallback)
         {
             if (request.Method != "GET") return false;
-            string url = request.Url, mimeType = "text/html", html, accept = string.Empty;
+            string url = request.Url, mimeType = "text/html", text, accept = string.Empty;
+
+            #region [ VIEW ]
+
+            if (url.Contains("/view/")) {
+                Uri uri = new Uri(url);
+                string path = uri.AbsolutePath.Substring(1).Replace('/', '\\');
+                if (File.Exists(path))
+                {
+                    string ext = path.Substring(path.Length - 3, 3);
+                    switch (ext)
+                    {
+                        case "tml":
+                            mimeType = "text/html";
+                            break;
+                        case ".js":
+                            mimeType = "text/javascript";
+                            break;
+                        case "css":
+                            mimeType = "text/css";
+                            break;
+                    }
+
+                    text = File.ReadAllText(path);
+
+                    //string body = File.ReadAllText(path);
+                    //int posH1 = body.ToLower().IndexOf("<h1");
+                    //if (posH1 != -1) body = body.Substring(posH1, body.Length - posH1);
+                    //string temp = File.ReadAllText("view/view.html");
+                    //string htm = temp + body + "</body></html>";
+
+                    byte[] buf = Encoding.UTF8.GetBytes(text);
+                    response.ResponseStream = new MemoryStream(buf);
+                    response.MimeType = mimeType;
+                    requestCompletedCallback();
+
+                    return true;
+                }
+            }
+
+            #endregion
 
             var headers = request.GetHeaders();
             if (headers.ContainsKey("Accept")) accept = headers["Accept"];
@@ -277,10 +325,15 @@ namespace eng
 
             //if (headers.ContainsKey("Referer")) return false;
 
-            html = f_link_getHtmlOnline(url);
-            if (html == null) html = "";
+            text = f_link_getHtmlOnline(url);
+            if (text == null) text = ""; else
+            {
+                if (File.Exists("view/temp-head.html")) _temp_head = File.ReadAllText("view/temp-head.html"); 
+                if (File.Exists("view/temp-end.html")) _temp_end = File.ReadAllText("view/temp-end.html");
+                text = _temp_head + "\r\n</head>\r\n<body>\r\n" + text + _temp_end;
+            }
 
-            byte[] bytes = Encoding.UTF8.GetBytes(html);
+            byte[] bytes = Encoding.UTF8.GetBytes(text);
             response.ResponseStream = new MemoryStream(bytes);
             response.MimeType = mimeType;
             requestCompletedCallback();

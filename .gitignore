@@ -20,3 +20,11 @@ eng/obj/x86/Debug/eng.exe
 eng/obj/x86/Debug/eng.pdb
 eng/obj/x86/Debug/eng.Properties.Resources.resources
 x86/eng.pdb
+.vs/eng/v14/.suo
+.vs/config/applicationhost.config
+eng/bin/Debug/eng.vshost.exe.manifest
+eng/bin/Debug/eng.vshost.exe
+eng/obj/x86/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+eng/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+x86/eng.vshost.exe.manifest
+x86/eng.vshost.exe
