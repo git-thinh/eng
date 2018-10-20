@@ -23,11 +23,7 @@ namespace eng
             ui_browser = new WebView("about:blank", new CefSharp.BrowserSettings()
             {
                 WebSecurityDisabled = true,
-                DefaultEncoding = "utf-8",
-                FileAccessFromFileUrlsAllowed = true,
-                WebGlDisabled = true,
-                UniversalAccessFromFileUrlsAllowed = true,
-                TabToLinksDisabled = true
+                PageCacheDisabled = true
             })
             { Dock = DockStyle.Fill };
             this.Controls.Add(ui_browser);

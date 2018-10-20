@@ -46,11 +46,11 @@ h1 {
     text-align: center;
 }
 
-div, p, li {
+p, li {
     line-height: 35px;
 }
 
-blockquote, table tr td {
+blockquote {
     display: inline-block;
 }
 
@@ -76,6 +76,10 @@ blockquote, table tr td {
             background-color: yellow;
         }
 
+.popup_right_search_txt {
+    float: right;
+    border: 1px solid #ccc;
+}
 /***********************************/
 /*dictionary.cambridge.org*/
 .utterance {
