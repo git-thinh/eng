@@ -31,13 +31,13 @@ namespace eng
             })
             { Dock = DockStyle.Fill };
             this.Controls.Add(ui_browser);
-            ui_browser.PropertyChanged += (se, ev) => { switch (ev.PropertyName) { case "IsBrowserInitialized": f_browser_Go(URL); break; case "Title": f_browser_loadTitleReady(ui_browser.Title); break; case "IsLoading": f_browser_loadDomReady(); break; } };
+            ui_browser.PropertyChanged += (se, ev) => { switch (ev.PropertyName) { case "IsBrowserInitialized": f_browser_Go(URL); ui_browser.ShowDevTools(); break; case "Title": f_browser_loadTitleReady(ui_browser.Title); break; case "IsLoading": f_browser_loadDomReady(); break; } };
             //ui_browser.RequestHandler = new BrowserRequestHandler(app, this);
             //ui_browser.RegisterJsObject("API", new API(app, this));
 
 
-            ContextMenu cm = new ContextMenu(f_build_contextMenu());
-            ui_browser.ContextMenu = cm;
+            //ContextMenu cm = new ContextMenu(f_build_contextMenu());
+            //ui_browser.ContextMenu = cm;
             ui_browser.MenuHandler = new BrowserMenuContextHandler();
 
             this.Shown += (se, ev) =>

@@ -2,6 +2,22 @@
 *, html {
 }
 
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: none;
+    border-radius: 0px;
+    background-color: #fafafa;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 0px;
+    -webkit-box-shadow: none;
+    background-color: #ccc;
+}
+
 #___canvas {
     display: none;
 }
@@ -21,27 +37,43 @@ a {
     text-decoration: none;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+}
+
 h1 {
     margin: 0px 0 10px 0;
     text-align: center;
 }
 
-::-webkit-scrollbar {
-    width: 12px;
-}
-
-::-webkit-scrollbar-track {
-    -webkit-box-shadow: none;
-    border-radius: 0px;
-    background-color: #fafafa;
-}
-
-::-webkit-scrollbar-thumb {
-    border-radius: 0px;
-    -webkit-box-shadow: none;
-    background-color: #ccc;
-}
-
 div, p, li {
-    line-height: 35px;    
+    line-height: 35px;
 }
+
+blockquote, table tr td {
+    display: inline-block;
+}
+
+#___menu_context {
+    position: fixed;
+    z-index: 99999;
+    width: 255px;
+    height: 345px;
+    background-color: orange;
+}
+
+/***********************************/
+/*dictionary.cambridge.org*/
+.utterance {
+    display: inline-block;
+    width: 100%;
+    position: relative;
+}
+
+    .utterance .speaker {
+        position: absolute;
+    }
+
+    .utterance .content {
+        padding-left: 30px;
+    }

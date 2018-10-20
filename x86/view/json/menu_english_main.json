@@ -1,0 +1,18 @@
+[
+  {
+    "type": "api",
+    "text": "Reload",
+    "api": "reload"
+  },
+  {
+    "type": "api",
+    "text": "Show DevTool",
+    "api": "devtool"
+  },
+  { "type": "hr" },
+  {
+    "type": "self",
+    "text": "Close Menu",
+    "api": "close_menu"
+  }
+]
