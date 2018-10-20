@@ -12,12 +12,20 @@ var f_get = function (url, callback_ok, callback_fail) {
 }
 
 function f_api_executeByKey(menu_id) {
-    f_log(menu_id);
+    f_menu_Hide();
+    var menu = _.find(MENUS, function (o) { return o.id == menu_id; });
+    if (menu && menu.fun) {
+        f_log(menu);
+        var fun = 'f_api_' + menu.fun;
+        if (API && API[fun]) API[fun](JSON.stringify(menu));
+    }
 }
 
 ////////////////////////////////////////////////////////////
 
 function f_menu_Init() {
+    MENUS = [];
+
     f_get('/view/json/menu_english_main.json', function (text) {
         //f_log(text);
         var items = JSON.parse(text), li = '', _click = '';
@@ -28,9 +36,6 @@ function f_menu_Init() {
                 case 'api':
                     _click = ' onclick="f_api_executeByKey(' + i + ');" ';
                     li += '<li ' + _click + '>' + items[i].text + '</li>';
-                    break; 
-                case 'hr':
-                    li += '<li class=hr></li>';
                     break;
                 default:
                     _click = ' onclick="f_menu_Click(' + i + ');" ';
@@ -38,7 +43,7 @@ function f_menu_Init() {
                     break;
             }
         }
-        if (li.length > 0) { 
+        if (li.length > 0) {
             var el = document.getElementById('___menu_context');
             if (el) {
                 el.innerHTML = '<ul>' + li + '</ul>';
@@ -50,7 +55,13 @@ function f_menu_Init() {
 }
 
 function f_menu_Click(menu_id) {
-    f_log(menu_id);
+    f_menu_Hide();
+    var menu = _.find(MENUS, function (o) { return o.id == menu_id; });
+    if (menu && menu.fun) {
+        f_log(menu);
+        var fun = menu.fun;
+        if (window[fun]) window[fun](menu);
+    }
 }
 
 function f_menu_Show(e) {
@@ -62,6 +73,31 @@ function f_menu_Show(e) {
         el.style.display = 'inline-block';
     }
 }
+
+function f_menu_Hide() {
+    var el = document.getElementById('___menu_context');
+    if (el) el.style.display = 'none';
+}
+
+////////////////////////////////////////////////////////////
+
+function f_editor_highLightOpen(menu) {
+    if (menu) {
+        if (menu.value == true) {
+            menu.text = 'Hight light [OFF]';
+            menu.value = false;
+        } else {
+            menu.value = true;
+            menu.text = 'Hight light [ON]';
+        }
+        var ok = API.f_api_writeFile('view/json/menu_english_main.json', JSON.stringify(MENUS)); 
+        if (ok) {
+            f_menu_Init();
+        }
+    }
+}
+
+////////////////////////////////////////////////////////////
 
 document.addEventListener("DOMContentLoaded", function (event) {
     f_log('DOMContentLoaded');

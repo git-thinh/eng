@@ -13,6 +13,45 @@ using System.Web;
 
 namespace eng
 {
+    public interface IBrowser
+    {
+        void f_browser_Reload();
+        void f_browser_Go(string url);
+        void f_browser_DevTool();
+    }
+
+    public class ApiJavascript
+    {
+        readonly IBrowser _browser;
+        public ApiJavascript(IBrowser browser) { this._browser = browser; }
+
+        public void f_api_devtool(String menu)
+        {
+            _browser.f_browser_DevTool();
+        }
+
+        public void f_api_reload(String menu)
+        {
+            _browser.f_browser_Reload();
+        }
+        
+        public string f_api_readFile(String file)
+        {
+            if (File.Exists(file)) return File.ReadAllText(file);
+            return JsonConvert.SerializeObject(new { Ok = false, Message = "Cannot find the file: " + file });
+        }
+        
+        public Boolean f_api_writeFile(String file, String data)
+        {
+            if (File.Exists(file))
+            {
+                File.WriteAllText(file, data);
+                return true;
+            }
+            return false;
+        }
+    }
+
     public class ApiHandler : ISchemeHandler
     {
         public ApiHandler() { }
@@ -84,7 +123,7 @@ namespace eng
         readonly ConcurrentDictionary<string, List<int>> DOMAIN_LINK;
         readonly ConcurrentDictionary<string, List<int>> KEY_INDEX;
         readonly ConcurrentDictionary<string, string> TRANSLATE;
-        
+
         #endregion
 
         public HttpHandler()
@@ -107,7 +146,7 @@ namespace eng
             TIME_VIEW_LINK = new ConcurrentDictionary<int, int>();
             KEY_INDEX = new ConcurrentDictionary<string, List<int>>();
         }
-        
+
         public string f_link_getHtmlCache(string url)
         {
             if (CACHE.ContainsKey(url))
@@ -280,7 +319,8 @@ namespace eng
 
             #region [ VIEW ]
 
-            if (url.Contains("/view/")) {
+            if (url.Contains("/view/"))
+            {
                 Uri uri = new Uri(url);
                 string path = uri.AbsolutePath.Substring(1).Replace('/', '\\');
                 if (File.Exists(path))
@@ -326,9 +366,10 @@ namespace eng
             //if (headers.ContainsKey("Referer")) return false;
 
             text = f_link_getHtmlOnline(url);
-            if (text == null) text = ""; else
+            if (text == null) text = "";
+            else
             {
-                if (File.Exists("view/temp-head.html")) _temp_head = File.ReadAllText("view/temp-head.html"); 
+                if (File.Exists("view/temp-head.html")) _temp_head = File.ReadAllText("view/temp-head.html");
                 if (File.Exists("view/temp-end.html")) _temp_end = File.ReadAllText("view/temp-end.html");
                 text = _temp_head + "\r\n</head>\r\n<body>\r\n" + text + _temp_end;
             }

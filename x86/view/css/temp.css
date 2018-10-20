@@ -57,10 +57,24 @@ blockquote, table tr td {
 #___menu_context {
     position: fixed;
     z-index: 99999;
-    width: 255px;
-    height: 345px;
-    background-color: orange;
+    background-color: #ccc;
 }
+
+    #___menu_context ul {
+        padding: 0;
+        margin: 0;
+    }
+
+    #___menu_context li {
+        padding: 0 15px 0 15px;
+        border-bottom: 1px solid #eee;
+        font-size: 0.7em;
+    }
+
+        #___menu_context li:hover {
+            cursor: pointer;
+            background-color: yellow;
+        }
 
 /***********************************/
 /*dictionary.cambridge.org*/

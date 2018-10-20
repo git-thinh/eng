@@ -1,18 +1,1 @@
-[
-  {
-    "type": "api",
-    "text": "Reload",
-    "api": "reload"
-  },
-  {
-    "type": "api",
-    "text": "Show DevTool",
-    "api": "devtool"
-  },
-  { "type": "hr" },
-  {
-    "type": "self",
-    "text": "Close Menu",
-    "api": "close_menu"
-  }
-]
+[{"type":"api","text":"Reload","fun":"reload","id":0},{"type":"api","text":"Show DevTool","fun":"devtool","id":1},{"text":"Hight light [OFF]","fun":"f_editor_highLightOpen","value":false,"id":2},{"type":"self","text":"Close Menu","id":3}]

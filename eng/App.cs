@@ -41,10 +41,12 @@ namespace eng
             CEF.RegisterScheme("res", "local", new LocalSchemeHandlerFactory());
             CEF.RegisterScheme("http", new HttpHandlerFactory());
             CEF.RegisterScheme("https", new HttpHandlerFactory());
-            
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new fBrowser());
+            fBrowser f = new fBrowser();
+            CEF.RegisterJsObject("API", new ApiJavascript(f));
+
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(f);
 
             CEF.Shutdown();
         }
