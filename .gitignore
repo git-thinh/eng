@@ -28,3 +28,5 @@ eng/obj/x86/Debug/DesignTimeResolveAssemblyReferencesInput.cache
 eng/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
 x86/eng.vshost.exe.manifest
 x86/eng.vshost.exe
+eng/obj/x86/Debug/TempPE/Properties.Resources.Designer.cs.dll
+eng/obj/x86/Debug/DesignTimeResolveAssemblyReferences.cache

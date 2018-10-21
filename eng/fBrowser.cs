@@ -14,6 +14,7 @@ namespace eng
 
         public fBrowser()
         {
+            this.Icon = eng.Properties.Resources.icon;
             this.Width = 800;
             this.Height = Screen.PrimaryScreen.WorkingArea.Height;
 

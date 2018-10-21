@@ -48,12 +48,16 @@ namespace eng
 
         public Boolean f_api_writeFile(String file, String data)
         {
+            if (string.IsNullOrWhiteSpace(file)) return false;
+            string fi = file;
+            if (fi[0] == '/' || fi[0] == '\\') fi = fi.Substring(1).Replace('\\', '/').Trim();
+
             try
             {
-                string fi = Path.GetFullPath(file);
+                fi = Path.GetFullPath(fi);
                 string dir = Path.GetDirectoryName(fi);
                 if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
-                File.WriteAllText(file, data);
+                File.WriteAllText(fi, data);
                 return true;
             }
             catch { }

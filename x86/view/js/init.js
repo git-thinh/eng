@@ -1,4 +1,6 @@
-﻿var _menus = [];
+﻿var _CONFIG_FILE = '/view/json/menu_english_main.json';
+
+var _menus = [];
 var _links = [];
 
 var f_log = 1 ? console.log.bind(console, '[LOG] ') : function () { };
@@ -48,7 +50,7 @@ function f_writeFile(file, text) {
 function f_menu_Init() {
     _menus = [];
 
-    f_get('/view/json/menu_english_main.json', function (text) {
+    f_get(_CONFIG_FILE, function (text) {
         //f_log(text);
         var items = JSON.parse(text), li = '', _click = '';
         for (var i = 0; i < items.length; i++) {
@@ -135,10 +137,47 @@ function f_editor_highLightOpen(menu) {
             menu.value = true;
             menu.text = 'Hight light [ON]';
         }
-        var ok = f_writeFile('view/json/menu_english_main.json', JSON.stringify(_menus));
+        var ok = f_writeFile(_CONFIG_FILE, JSON.stringify(_menus));
         if (ok) {
             f_menu_Init();
         }
+    }
+}
+
+function f_editor_autoSave(menu) {
+    if (menu) {
+        w2prompt({
+            label: 'Auto save after once miliseconds',
+            value: menu.value,
+            attrs: 'style="width: 250px"',
+            title: w2utils.lang('Notification'),
+            ok_text: w2utils.lang('Ok'),
+            cancel_text: w2utils.lang('Cancel'),
+            width: 500,
+            height: 250
+        })
+        .change(function (event) {
+            //console.log('change', event);
+        })
+        .ok(function (_value) {
+            //console.log('ok', _value);
+            var val = parseInt(_value);
+            if (val == NaN || val < 0) {
+                alert('Please input is number >= 0');
+                return;
+            }
+
+            menu.value = val;
+            if (val == 0) {
+                menu.text = 'Auto Save [OFF]'; 
+            } else { 
+                menu.text = 'Auto Save [ON]';
+            }
+            var ok = f_writeFile(_CONFIG_FILE, JSON.stringify(_menus));
+            if (ok) {
+                f_menu_Init();
+            }
+        });
     }
 }
 
