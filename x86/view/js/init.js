@@ -160,22 +160,21 @@ function f_editor_autoSave(menu) {
             //console.log('change', event);
         })
         .ok(function (_value) {
-            //console.log('ok', _value);
-            var val = parseInt(_value);
-            if (val == NaN || val < 0) {
-                alert('Please input is number >= 0');
+            var val = Number(_value); 
+            if (val.toString() == 'NaN' || val < 0) {
+                f_alert('Please input is number >= 0', function () { f_editor_autoSave(menu); });
                 return;
             }
-
             menu.value = val;
             if (val == 0) {
-                menu.text = 'Auto Save [OFF]'; 
-            } else { 
+                menu.text = 'Auto Save [OFF]';
+            } else {
                 menu.text = 'Auto Save [ON]';
             }
             var ok = f_writeFile(_CONFIG_FILE, JSON.stringify(_menus));
             if (ok) {
                 f_menu_Init();
+                f_alert('Write setting of the Auto Save successfully');
             }
         });
     }
