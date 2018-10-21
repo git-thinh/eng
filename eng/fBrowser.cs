@@ -56,7 +56,7 @@ namespace eng
             //var val = ui_browser.EvaluateScript(js);
         }
 
-        public void f_browser_Go(string url)
+        public void f_browser_Go(string url, string title = "")
         {
             if (ui_browser.IsLoading) ui_browser.Stop();
             ui_browser.Load(url);

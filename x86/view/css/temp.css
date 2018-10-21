@@ -33,8 +33,17 @@ ul {
     list-style: none;
 }
 
+a:not([href]):not([tabindex]):focus, a:not([href]):not([tabindex]):hover {
+    color: #007bff;
+}
+
+a:not([href]):not([tabindex]) {
+    color: #007bff;
+}
+
 a {
-    text-decoration: none;
+    text-decoration: none; 
+    cursor: pointer;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -52,6 +61,20 @@ p, li {
 
 blockquote {
     display: inline-block;
+}
+
+#___article {
+    display: inline-block;
+}
+
+.td50 {
+    display: inline-block;
+    width: 50%;
+}
+
+.td33 {
+    display: inline-block;
+    width: 33%;
 }
 
 #___menu_context {
@@ -76,10 +99,21 @@ blockquote {
             background-color: yellow;
         }
 
-.popup_right_search_txt {
-    float: right;
+.popup_search_txt {
+    float: left;
     border: 1px solid #ccc;
 }
+
+.popup_button {
+    float: right;
+    margin-right: 7px;
+    border: 1px solid #ccc;
+}
+
+    .popup_button:hover {
+        background-color: orange;
+    }
+
 /***********************************/
 /*dictionary.cambridge.org*/
 .utterance {

@@ -16,7 +16,7 @@ namespace eng
     public interface IBrowser
     {
         void f_browser_Reload();
-        void f_browser_Go(string url);
+        void f_browser_Go(string url, string title = "");
         void f_browser_DevTool();
     }
 
@@ -30,24 +30,33 @@ namespace eng
             _browser.f_browser_DevTool();
         }
 
+        public void f_main_openUrl(String url, String title)
+        {
+            _browser.f_browser_Go(url, title);
+        }
+
         public void f_api_reload(String menu)
         {
             _browser.f_browser_Reload();
         }
-        
+
         public string f_api_readFile(String file)
         {
             if (File.Exists(file)) return File.ReadAllText(file);
             return JsonConvert.SerializeObject(new { Ok = false, Message = "Cannot find the file: " + file });
         }
-        
+
         public Boolean f_api_writeFile(String file, String data)
         {
-            if (File.Exists(file))
+            try
             {
+                string fi = Path.GetFullPath(file);
+                string dir = Path.GetDirectoryName(fi);
+                if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
                 File.WriteAllText(file, data);
                 return true;
             }
+            catch { }
             return false;
         }
     }
@@ -245,7 +254,7 @@ namespace eng
 
         string _htmlFormat(string url, string html)
         {
-            string s = HttpUtility.HtmlDecode(html), title = "";
+            string s = HttpUtility.HtmlDecode(html);
 
             // Fetch all url same domain in this page ...
             //string[] urls = Html.f_html_actractUrl(url, s);
@@ -253,8 +262,6 @@ namespace eng
 
             int posH1 = s.ToLower().IndexOf("<h1");
             if (posH1 != -1) s = s.Substring(posH1, s.Length - posH1);
-
-            s = "<!--" + url + @"-->" + Environment.NewLine + @"<input id=""___title"" value=""" + title + @""" type=""hidden"">" + s;
 
             return s;
         }
@@ -316,12 +323,12 @@ namespace eng
         {
             if (request.Method != "GET") return false;
             string url = request.Url, mimeType = "text/html", text, accept = string.Empty;
+            Uri uri = new Uri(url);
 
             #region [ VIEW ]
 
             if (url.Contains("/view/"))
             {
-                Uri uri = new Uri(url);
                 string path = uri.AbsolutePath.Substring(1).Replace('/', '\\');
                 if (File.Exists(path))
                 {
@@ -365,13 +372,24 @@ namespace eng
 
             //if (headers.ContainsKey("Referer")) return false;
 
-            text = f_link_getHtmlOnline(url);
+            string file = "view/html/" + uri.Host + "/" + string.Join("-", uri.AbsolutePath.Split('/').Where(x => x.Trim().Length > 0).ToArray()) + ".htm",
+                _cache = string.Empty;
+            if (File.Exists(file))
+            {
+                text = File.ReadAllText(file);
+                _cache = "<script> console.log('CACHE = ','" + file + "') </script>";
+            }
+            else
+                text = f_link_getHtmlOnline(url);
             if (text == null) text = "";
             else
             {
                 if (File.Exists("view/temp-head.html")) _temp_head = File.ReadAllText("view/temp-head.html");
                 if (File.Exists("view/temp-end.html")) _temp_end = File.ReadAllText("view/temp-end.html");
-                text = _temp_head + "\r\n</head>\r\n<body>\r\n" + text + _temp_end;
+
+                //s = "<!--" + url + @"-->" + Environment.NewLine + @"<input id=""___title"" value=""" + title + @""" type=""hidden"">" + s;
+
+                text = _temp_head + "\r\n</head>\r\n<body>\r\n" + text + "<!--END_BODY-->" + _cache + _temp_end;
             }
 
             byte[] bytes = Encoding.UTF8.GetBytes(text);

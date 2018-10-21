@@ -2,7 +2,8 @@
 var _links = [];
 
 var f_log = 1 ? console.log.bind(console, '[LOG] ') : function () { };
-var f_get = function (url, callback_ok, callback_fail) {
+
+function f_get(url, callback_ok, callback_fail) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200)
@@ -12,7 +13,6 @@ var f_get = function (url, callback_ok, callback_fail) {
     xhttp.open("GET", url, true);
     xhttp.send();
 }
-
 function f_api_executeByKey(menu_id) {
     f_menu_Hide();
     var menu = _.find(_menus, function (o) { return o.id == menu_id; });
@@ -21,6 +21,26 @@ function f_api_executeByKey(menu_id) {
         var fun = 'f_api_' + menu.fun;
         if (API && API[fun]) API[fun](JSON.stringify(menu));
     }
+}
+function f_main_openUrl(url, event) {
+    var title = '';
+    if (event.target && event.target.innerText) title = event.target.innerText;
+    f_log(title, url);
+    document.body.innerHTML = '<h1>' + title + '<br><br><br><br><br><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjAiIHdpZHRoPSI2NHB4IiBoZWlnaHQ9IjY0cHgiIHZpZXdCb3g9IjAgMCAxMjggMTI4IiB4bWw6c3BhY2U9InByZXNlcnZlIj48Zz48cGF0aCBkPSJNNzEgMzkuMlYuNGE2My42IDYzLjYgMCAwIDEgMzMuOTYgMTQuNTdMNzcuNjggNDIuMjRhMjUuNTMgMjUuNTMgMCAwIDAtNi43LTMuMDN6IiBmaWxsPSIjMDAwIi8+PHBhdGggZD0iTTcxIDM5LjJWLjRhNjMuNiA2My42IDAgMCAxIDMzLjk2IDE0LjU3TDc3LjY4IDQyLjI0YTI1LjUzIDI1LjUzIDAgMCAwLTYuNy0zLjAzeiIgZmlsbD0iI2UxZTFlMSIgdHJhbnNmb3JtPSJyb3RhdGUoNDUgNjQgNjQpIi8+PHBhdGggZD0iTTcxIDM5LjJWLjRhNjMuNiA2My42IDAgMCAxIDMzLjk2IDE0LjU3TDc3LjY4IDQyLjI0YTI1LjUzIDI1LjUzIDAgMCAwLTYuNy0zLjAzeiIgZmlsbD0iI2UxZTFlMSIgdHJhbnNmb3JtPSJyb3RhdGUoOTAgNjQgNjQpIi8+PHBhdGggZD0iTTcxIDM5LjJWLjRhNjMuNiA2My42IDAgMCAxIDMzLjk2IDE0LjU3TDc3LjY4IDQyLjI0YTI1LjUzIDI1LjUzIDAgMCAwLTYuNy0zLjAzeiIgZmlsbD0iI2UxZTFlMSIgdHJhbnNmb3JtPSJyb3RhdGUoMTM1IDY0IDY0KSIvPjxwYXRoIGQ9Ik03MSAzOS4yVi40YTYzLjYgNjMuNiAwIDAgMSAzMy45NiAxNC41N0w3Ny42OCA0Mi4yNGEyNS41MyAyNS41MyAwIDAgMC02LjctMy4wM3oiIGZpbGw9IiNiZWJlYmUiIHRyYW5zZm9ybT0icm90YXRlKDE4MCA2NCA2NCkiLz48cGF0aCBkPSJNNzEgMzkuMlYuNGE2My42IDYzLjYgMCAwIDEgMzMuOTYgMTQuNTdMNzcuNjggNDIuMjRhMjUuNTMgMjUuNTMgMCAwIDAtNi43LTMuMDN6IiBmaWxsPSIjOTc5Nzk3IiB0cmFuc2Zvcm09InJvdGF0ZSgyMjUgNjQgNjQpIi8+PHBhdGggZD0iTTcxIDM5LjJWLjRhNjMuNiA2My42IDAgMCAxIDMzLjk2IDE0LjU3TDc3LjY4IDQyLjI0YTI1LjUzIDI1LjUzIDAgMCAwLTYuNy0zLjAzeiIgZmlsbD0iIzZlNmU2ZSIgdHJhbnNmb3JtPSJyb3RhdGUoMjcwIDY0IDY0KSIvPjxwYXRoIGQ9Ik03MSAzOS4yVi40YTYzLjYgNjMuNiAwIDAgMSAzMy45NiAxNC41N0w3Ny42OCA0Mi4yNGEyNS41MyAyNS41MyAwIDAgMC02LjctMy4wM3oiIGZpbGw9IiMzYzNjM2MiIHRyYW5zZm9ybT0icm90YXRlKDMxNSA2NCA2NCkiLz48YW5pbWF0ZVRyYW5zZm9ybSBhdHRyaWJ1dGVOYW1lPSJ0cmFuc2Zvcm0iIHR5cGU9InJvdGF0ZSIgdmFsdWVzPSIwIDY0IDY0OzQ1IDY0IDY0OzkwIDY0IDY0OzEzNSA2NCA2NDsxODAgNjQgNjQ7MjI1IDY0IDY0OzI3MCA2NCA2NDszMTUgNjQgNjQiIGNhbGNNb2RlPSJkaXNjcmV0ZSIgZHVyPSI3MjBtcyIgcmVwZWF0Q291bnQ9ImluZGVmaW5pdGUiPjwvYW5pbWF0ZVRyYW5zZm9ybT48L2c+PGc+PGNpcmNsZSBmaWxsPSIjMDAwIiBjeD0iNjMuNjYiIGN5PSI2My4xNiIgcj0iMTIiLz48YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSJvcGFjaXR5IiBkdXI9IjcyMG1zIiBiZWdpbj0iMHMiIHJlcGVhdENvdW50PSJpbmRlZmluaXRlIiBrZXlUaW1lcz0iMDswLjU7MSIgdmFsdWVzPSIxOzA7MSIvPjwvZz48L3N2Zz4="/></h1>';
+    ////////setTimeout(function () { API.GoTitle(url, title); }, 3000);
+    API.f_main_openUrl(url, title);
+}
+function f_alert(message, callback_ok) {
+    w2alert(message)
+        .done(function () {
+            //f_log('done: call back when alert closed');
+            if (callback_ok) callback_ok();
+        });
+}
+function f_writeFile(file, text) {
+    if (API && API.f_api_writeFile)
+        return API.f_api_writeFile(file, text);
+    return false;
 }
 
 ////////////////////////////////////////////////////////////
@@ -95,13 +115,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
         var tds = trs[i].querySelectorAll('td'), wi = parseInt(100 / tds.length);
         //f_log(i, wi);
         for (var j = 0; j < tds.length; j++) {
-            tds[j].setAttribute('width', wi + '%');
+            tds[j].className = 'td' + wi;
+            //tds[j].setAttribute('width', wi + '%');
         }
     }
 
     _links = f_link_getList();
     f_link_Search();
 });
+
 ////////////////////////////////////////////////////////////
 
 function f_editor_highLightOpen(menu) {
@@ -113,7 +135,7 @@ function f_editor_highLightOpen(menu) {
             menu.value = true;
             menu.text = 'Hight light [ON]';
         }
-        var ok = API.f_api_writeFile('view/json/menu_english_main.json', JSON.stringify(_menus)); 
+        var ok = f_writeFile('view/json/menu_english_main.json', JSON.stringify(_menus));
         if (ok) {
             f_menu_Init();
         }
@@ -132,7 +154,7 @@ function f_english_Keywords(menu) {
 
 
     $().w2layout({
-        name: 'layout_link',
+        name: 'layout_words',
         padding: 0,
         panels: [
             { type: 'top', size: '30px', resizable: false, style: 'padding:5px;overflow:hidden;' },
@@ -141,7 +163,7 @@ function f_english_Keywords(menu) {
     });
 
     $().w2grid({
-        name: 'grid_link',
+        name: 'grid_words',
         show: {
             header: false,  // indicates if header is visible
             toolbar: false,  // indicates if toolbar is visible
@@ -186,17 +208,18 @@ function f_english_Keywords(menu) {
         title: 'Keywords',
         width: 900,
         height: 600,
+        modal: true,
         showMax: true,
-        body: '<div id="popup_link" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0;"></div>',
+        body: '<div id="popup_words" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0;"></div>',
         onOpen: function (event) {
             event.onComplete = function () {
                 document.body.style.overflowY = 'hidden';
 
-                $('#w2ui-popup #popup_link').w2render('layout_link');
-                w2ui.layout_link.content('top', '<input type=text class=popup_right_search_txt placeholder="Search ..." onkeypress="if(event.keyCode == 13)  w2ui.grid_link.search(\'word\', this.value); " />');
-                w2ui.layout_link.content('main', w2ui.grid_link);
+                $('#w2ui-popup #popup_words').w2render('layout_words');
+                w2ui.layout_words.content('top', '<input type=text class=popup_right_search_txt placeholder="Search ..." onkeypress="if(event.keyCode == 13)  w2ui.grid_words.search(\'word\', this.value); " />');
+                w2ui.layout_words.content('main', w2ui.grid_words);
 
-                //$('#w2ui-popup #grid_link').w2render('grid_link');
+                //$('#w2ui-popup #grid_words').w2render('grid_words');
                 w2popup.toggle();
             };
         },
@@ -212,7 +235,7 @@ function f_english_Keywords(menu) {
     });
 }
 
-function f_link_getList() { 
+function f_link_getList() {
     var URL = location.href,
         aHost = location.hostname.split('.'),
         DOMAIN_MAIN = aHost.length > 1 ? (aHost[aHost.length - 2] + '.' + aHost[aHost.length - 1]) : aHost[0];
@@ -233,6 +256,8 @@ function f_link_getList() {
         aLink = [], index = 0;
     for (var i = 0; i < links.length; i++) {
         var el = links[i], text = el.innerText;
+        if (el.hasAttribute('onclick')) continue;
+
         if (text != null && text.length > 0 && el.hasAttribute('href') == true) {
             text = text.trim();
             if (text.length == 0 || text[0] == '#') { el.parentElement.removeChild(el); continue; }
@@ -263,8 +288,11 @@ function f_link_getList() {
                 if (URL == link || URL == link + '/' || link.indexOf('javascript:') != -1) continue;
 
                 //el.parentElement.removeChild(el);
-                el.setAttribute("href", "javascript:void(-1);");
-                el.setAttribute("onclick", "f_main_openUrl('" + link + "','" + text + "');");
+                //el.setAttribute("href", "javascript:void(-1);");
+                el.setAttribute("onclick", "f_main_openUrl('" + link + "', event);");
+
+                if (el.hasAttribute('target')) el.removeAttribute('target');
+                if (el.hasAttribute('href')) el.removeAttribute('href');
 
                 index++;
                 aLink.push({ recid: index, text: text, url: link, level: link.split('/').length - 3 });
@@ -279,7 +307,7 @@ function f_link_getList() {
 }
 
 function f_link_Search(menu) {
-    
+
     $().w2layout({
         name: 'layout_link',
         padding: 0,
@@ -336,14 +364,17 @@ function f_link_Search(menu) {
         title: 'Search Links',
         width: 900,
         height: 600,
+        modal: true,
         showMax: true,
         body: '<div id="popup_link" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0;"></div>',
         onOpen: function (event) {
             event.onComplete = function () {
                 document.body.style.overflowY = 'hidden';
 
+                var s = '<input type=text class=popup_search_txt placeholder="Search ..." onkeypress="if(event.keyCode == 13)  w2ui.grid_link.search(\'text\', this.value); " /><button onclick="f_link_Save()" class=popup_button>Save</button>'
+
                 $('#w2ui-popup #popup_link').w2render('layout_link');
-                w2ui.layout_link.content('top', '<input type=text class=popup_right_search_txt placeholder="Search ..." onkeypress="if(event.keyCode == 13)  w2ui.grid_link.search(\'text\', this.value); " />');
+                w2ui.layout_link.content('top', s);
                 w2ui.layout_link.content('main', w2ui.grid_link);
 
                 //$('#w2ui-popup #grid_link').w2render('grid_link');
@@ -360,4 +391,27 @@ function f_link_Search(menu) {
             }
         }
     });
+}
+
+function f_link_Save() {
+    w2popup.lock('Saving links ...', true);
+    var domain = location.href.split('/')[2].toLowerCase();
+    var ok = f_writeFile('view/json/' + domain + '.json', JSON.stringify(_links));
+    if (ok)
+        f_alert('Save the links successfully');
+    else
+        f_alert('Save the links fail');
+
+}
+
+function f_html_Save() {
+    //w2popup.lock('Saving document ...', true);
+    var domain = location.href.split('/')[2].toLowerCase(),
+        file = _.startCase(location.href.split(location.href.split('/')[2])[1].substr(1)).split(' ').join('-'),
+        data = document.body.innerHTML.split('<!--END_BODY-->')[0].trim();
+    var ok = f_writeFile('view/html/' + domain + '/' + file + '.htm', data);
+    if (ok)
+        f_alert('Save the document successfully');
+    else
+        f_alert('Save the document fail');
 }
