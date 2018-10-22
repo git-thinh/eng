@@ -63,6 +63,21 @@ namespace eng
             catch { }
             return false;
         }
+
+        public Boolean f_api_existFile(String file)
+        {
+            if (string.IsNullOrWhiteSpace(file)) return false;
+            string fi = file;
+            if (fi[0] == '/' || fi[0] == '\\') fi = fi.Substring(1).Replace('\\', '/').Trim();
+
+            try
+            {
+                fi = Path.GetFullPath(fi);
+                return File.Exists(fi);
+            }
+            catch { }
+            return false;
+        }
     }
 
     public class ApiHandler : ISchemeHandler

@@ -1,5 +1,10 @@
 ﻿var _CONFIG_FILE = '/view/json/menu_english_main.json';
-
+var _config = {
+    AutoSave: 0,
+    HtmlChanged: false,
+    HighLight: false,
+    StarThisLink: false,
+};
 var _menus = [];
 var _links = [];
 
@@ -25,8 +30,9 @@ function f_api_executeByKey(menu_id) {
     }
 }
 function f_main_openUrl(url, event) {
-    var title = '';
-    if (event.target && event.target.innerText) title = event.target.innerText;
+    var el = event.target, title = '';
+    if (el && el.parentElement && el.parentElement.tagName == 'A') el = el.parentElement;
+    if (el && el.innerText) title = el.innerText;
     f_log(title, url);
     document.body.innerHTML = '<h1>' + title + '<br><br><br><br><br><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjAiIHdpZHRoPSI2NHB4IiBoZWlnaHQ9IjY0cHgiIHZpZXdCb3g9IjAgMCAxMjggMTI4IiB4bWw6c3BhY2U9InByZXNlcnZlIj48Zz48cGF0aCBkPSJNNzEgMzkuMlYuNGE2My42IDYzLjYgMCAwIDEgMzMuOTYgMTQuNTdMNzcuNjggNDIuMjRhMjUuNTMgMjUuNTMgMCAwIDAtNi43LTMuMDN6IiBmaWxsPSIjMDAwIi8+PHBhdGggZD0iTTcxIDM5LjJWLjRhNjMuNiA2My42IDAgMCAxIDMzLjk2IDE0LjU3TDc3LjY4IDQyLjI0YTI1LjUzIDI1LjUzIDAgMCAwLTYuNy0zLjAzeiIgZmlsbD0iI2UxZTFlMSIgdHJhbnNmb3JtPSJyb3RhdGUoNDUgNjQgNjQpIi8+PHBhdGggZD0iTTcxIDM5LjJWLjRhNjMuNiA2My42IDAgMCAxIDMzLjk2IDE0LjU3TDc3LjY4IDQyLjI0YTI1LjUzIDI1LjUzIDAgMCAwLTYuNy0zLjAzeiIgZmlsbD0iI2UxZTFlMSIgdHJhbnNmb3JtPSJyb3RhdGUoOTAgNjQgNjQpIi8+PHBhdGggZD0iTTcxIDM5LjJWLjRhNjMuNiA2My42IDAgMCAxIDMzLjk2IDE0LjU3TDc3LjY4IDQyLjI0YTI1LjUzIDI1LjUzIDAgMCAwLTYuNy0zLjAzeiIgZmlsbD0iI2UxZTFlMSIgdHJhbnNmb3JtPSJyb3RhdGUoMTM1IDY0IDY0KSIvPjxwYXRoIGQ9Ik03MSAzOS4yVi40YTYzLjYgNjMuNiAwIDAgMSAzMy45NiAxNC41N0w3Ny42OCA0Mi4yNGEyNS41MyAyNS41MyAwIDAgMC02LjctMy4wM3oiIGZpbGw9IiNiZWJlYmUiIHRyYW5zZm9ybT0icm90YXRlKDE4MCA2NCA2NCkiLz48cGF0aCBkPSJNNzEgMzkuMlYuNGE2My42IDYzLjYgMCAwIDEgMzMuOTYgMTQuNTdMNzcuNjggNDIuMjRhMjUuNTMgMjUuNTMgMCAwIDAtNi43LTMuMDN6IiBmaWxsPSIjOTc5Nzk3IiB0cmFuc2Zvcm09InJvdGF0ZSgyMjUgNjQgNjQpIi8+PHBhdGggZD0iTTcxIDM5LjJWLjRhNjMuNiA2My42IDAgMCAxIDMzLjk2IDE0LjU3TDc3LjY4IDQyLjI0YTI1LjUzIDI1LjUzIDAgMCAwLTYuNy0zLjAzeiIgZmlsbD0iIzZlNmU2ZSIgdHJhbnNmb3JtPSJyb3RhdGUoMjcwIDY0IDY0KSIvPjxwYXRoIGQ9Ik03MSAzOS4yVi40YTYzLjYgNjMuNiAwIDAgMSAzMy45NiAxNC41N0w3Ny42OCA0Mi4yNGEyNS41MyAyNS41MyAwIDAgMC02LjctMy4wM3oiIGZpbGw9IiMzYzNjM2MiIHRyYW5zZm9ybT0icm90YXRlKDMxNSA2NCA2NCkiLz48YW5pbWF0ZVRyYW5zZm9ybSBhdHRyaWJ1dGVOYW1lPSJ0cmFuc2Zvcm0iIHR5cGU9InJvdGF0ZSIgdmFsdWVzPSIwIDY0IDY0OzQ1IDY0IDY0OzkwIDY0IDY0OzEzNSA2NCA2NDsxODAgNjQgNjQ7MjI1IDY0IDY0OzI3MCA2NCA2NDszMTUgNjQgNjQiIGNhbGNNb2RlPSJkaXNjcmV0ZSIgZHVyPSI3MjBtcyIgcmVwZWF0Q291bnQ9ImluZGVmaW5pdGUiPjwvYW5pbWF0ZVRyYW5zZm9ybT48L2c+PGc+PGNpcmNsZSBmaWxsPSIjMDAwIiBjeD0iNjMuNjYiIGN5PSI2My4xNiIgcj0iMTIiLz48YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSJvcGFjaXR5IiBkdXI9IjcyMG1zIiBiZWdpbj0iMHMiIHJlcGVhdENvdW50PSJpbmRlZmluaXRlIiBrZXlUaW1lcz0iMDswLjU7MSIgdmFsdWVzPSIxOzA7MSIvPjwvZz48L3N2Zz4="/></h1>';
     ////////setTimeout(function () { API.GoTitle(url, title); }, 3000);
@@ -44,7 +50,16 @@ function f_writeFile(file, text) {
         return API.f_api_writeFile(file, text);
     return false;
 }
-
+function f_api_existFile(file) {
+    if (API && API.f_api_existFile)
+        return API.f_api_existFile(file);
+    return false;
+}
+function f_html_getPathFile() {
+    var domain = location.href.split('/')[2].toLowerCase(),
+        file = _.startCase(location.href.split(location.href.split('/')[2])[1].substr(1)).split(' ').join('-');
+    return 'view/html/' + domain + '/' + file + '.htm';
+}
 ////////////////////////////////////////////////////////////
 
 function f_menu_Init() {
@@ -54,6 +69,24 @@ function f_menu_Init() {
         //f_log(text);
         var items = JSON.parse(text), li = '', _click = '';
         for (var i = 0; i < items.length; i++) {
+            if (items[i].fun && items[i].value) {
+                switch (items[i].fun) {
+                    case 'f_editor_autoSave':
+                        _config.AutoSave = items[i].value;
+                        f_editor_autoSaveRun();
+                        if (_config.AutoSave) {
+                            var fileHtm = f_html_getPathFile();
+                            var not_exist = f_api_existFile(fileHtm);
+                            if (not_exist == false)
+                                f_editor_Save(true);
+                        }
+                        break;
+                    case 'f_editor_highLightOpen':
+                        _config.HighLight = items[i].value;
+                        break;
+                }
+            }
+
             items[i].id = i;
             _menus.push(items[i]);
             switch (items[i].type) {
@@ -89,10 +122,11 @@ function f_menu_Click(menu_id) {
 }
 
 function f_menu_Show(e) {
-    f_log(e.type + ': ' + e.x + ';' + e.y);
+    //f_log(e.type + ': ' + e.x + ';' + e.y);
     var el = document.getElementById('___menu_context');
     if (el) {
-        el.style.top = e.y + 'px';
+        //el.style.top = e.y + 'px';
+        el.style.top = '0px';
         el.style.left = e.x + 'px';
         el.style.display = 'inline-block';
     }
@@ -123,7 +157,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
 
     _links = f_link_getList();
-    f_link_Search();
+    //f_link_Search();
 });
 
 ////////////////////////////////////////////////////////////
@@ -177,6 +211,36 @@ function f_editor_autoSave(menu) {
                 f_alert('Write setting of the Auto Save successfully');
             }
         });
+    }
+}
+
+var _timer_autoSave = null;
+function f_editor_autoSaveRun() {
+    if (_timer_autoSave || _config.AutoSave == 0) clearInterval(_timer_autoSave);
+    if (_config.AutoSave > 0) {
+        _timer_autoSave = setInterval(function () { f_editor_Save(true); }, _config.AutoSave);
+    }
+}
+
+function f_editor_Save(isAutoSave) {
+    //w2popup.lock('Saving document ...', true);
+    var fileHtm = f_html_getPathFile();
+    var data = document.body.innerHTML.split('<!--END_BODY-->')[0].trim();
+
+    var ok = f_writeFile(fileHtm, data);
+
+    if (isAutoSave) {
+        if (_config.HtmlChanged == true) return;
+        f_log('AUTO_SAVE = ' + ok.toString() + ' at ' + new Date().toString());
+        _config.HtmlChanged = true;
+    } else {
+        if (ok) {
+            f_alert('Save the document successfully');
+            _config.HtmlChanged = true;
+        }
+        else {
+            f_alert('Save the document fail');
+        }
     }
 }
 
@@ -272,6 +336,8 @@ function f_english_Keywords(menu) {
         }
     });
 }
+
+////////////////////////////////////////////////////////////
 
 function f_link_getList() {
     var URL = location.href,
@@ -442,14 +508,4 @@ function f_link_Save() {
 
 }
 
-function f_html_Save() {
-    //w2popup.lock('Saving document ...', true);
-    var domain = location.href.split('/')[2].toLowerCase(),
-        file = _.startCase(location.href.split(location.href.split('/')[2])[1].substr(1)).split(' ').join('-'),
-        data = document.body.innerHTML.split('<!--END_BODY-->')[0].trim();
-    var ok = f_writeFile('view/html/' + domain + '/' + file + '.htm', data);
-    if (ok)
-        f_alert('Save the document successfully');
-    else
-        f_alert('Save the document fail');
-}
+////////////////////////////////////////////////////////////
