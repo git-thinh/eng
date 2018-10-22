@@ -1,5 +1,6 @@
 ﻿var _CONFIG_FILE = '/view/json/menu_english_main.json';
 var _config = {
+    IsCached: false,
     AutoSave: 0,
     HtmlChanged: false,
     HighLight: false,

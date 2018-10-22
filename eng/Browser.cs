@@ -396,10 +396,14 @@ namespace eng
             if (File.Exists(file))
             {
                 text = File.ReadAllText(file);
-                _cache = "<script> console.log('CACHE = ','" + file + "') </script>";
+                _cache = "<script> console.log('CACHE = ','" + file + "'); if(_config) _config.IsCached = true; </script>";
             }
             else
+            {
                 text = f_link_getHtmlOnline(url);
+                _cache = "<script> console.log('ONLINE = ','" + url + "'); if(_config) _config.IsCached = false; </script>";
+            }
+
             if (text == null) text = "";
             else
             {
