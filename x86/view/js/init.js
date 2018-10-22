@@ -11,6 +11,7 @@ var _links = [];
 
 var _CLIENT_ID = 1;
 var _GET_ID = function () { var date = new Date(); var id = _CLIENT_ID + ("0" + (date.getMonth() + 1)).slice(-2) + ("0" + date.getDate()).slice(-2) + ("0" + date.getHours()).slice(-2) + ("0" + date.getMinutes()).slice(-2) + ("0" + date.getSeconds()).slice(-2) + (date.getMilliseconds() + Math.floor(Math.random() * 100)).toString().substring(0, 3); return parseInt(id); };
+var APP_INFO = { Width: $(window).width() };
 
 var f_log = 1 ? console.log.bind(console, '[LOG] ') : function () { };
 
@@ -356,12 +357,105 @@ function f_english_Keywords(menu) {
 
 function f_english_Translate() {
     if (_SELECT_OBJ != null) {
-        f_log('TRANSLATE ', _SELECT_OBJ);
-        f_post('//api/translate/v1', _SELECT_OBJ.text, function (_res) {
+        var otran = JSON.parse(JSON.stringify(_SELECT_OBJ));
+        f_log('TRANSLATE ', otran);
+        f_post('//api/translate/v1', otran.text, function (_res) {
             f_log('OK', _res);
+            if (_res && _res.length > 0) {
+                otran.mean_vi = _res;
+                f_english_TranslateShowResult(otran);
+            } else {
+
+            }
         }, function (_err) {
             f_log('ERR', _err);
         })
+    }
+}
+
+function f_getTextWidth(text, font) {
+    var c = document.getElementById("___canvas");
+    var ctx = c.getContext("2d");
+    ctx.font = font;
+    return ctx.measureText(text).width;
+}
+
+function f_displayTranslateCache(oTran) {
+    //alert(JSON.stringify(oTran));
+    if (oTran && oTran.id) {
+        var el = document.getElementById(oTran.id);
+        if (el) {
+            var text = el.innerText, s = '';
+            if (el.hasAttribute('title')) s = el.getAttribute('title');
+            oTran.success = true;
+            oTran.text = text;
+            oTran.mean_vi = s;
+            f_displayTranslate(oTran);
+
+            f_log('CACHE: BROWSER -> SETTING = ' + JSON.stringify(oTran));
+            f_sendSETTING(_MSG_TYPE.EN_TRANSLATE_GOOGLE_RESPONSE, null, oTran);
+        }
+    }
+}
+
+function f_english_TranslateShowResult(oTran) {
+    //alert(JSON.stringify(oTran));
+    var el = document.getElementById('___box_tran');
+    if (el && oTran) {
+        if (oTran.mean_vi == null || oTran.mean_vi.length == 0) {
+            window.getSelection().empty();
+            return;
+        }
+
+        var s;
+        var wiBrowser = APP_INFO.Width;
+        var w1 = f_getTextWidth(oTran.text, '1.3em Arial'),
+            w2 = f_getTextWidth(oTran.mean_vi, '1em Arial'),
+            wiText = 0, lines = false;
+        if (w1 + w2 >= wiBrowser) { wiText = w1; lines = true; } else wiText = w1 + w2;
+
+        if (lines || wiText >= wiBrowser) {
+            s = '<b class=lines>' + oTran.text[0].toUpperCase() + oTran.text.substr(1).trim() + '</b><p class=lines>' + oTran.mean_vi[0].toUpperCase() + oTran.mean_vi.substr(1) + '</p>';
+            if (wiText >= wiBrowser) {
+                wiText = wiBrowser - 45;
+                el.style.left = '40px';
+            }
+            else {
+                wiText -= 74;
+                el.style.left = (wiBrowser - (wiText + 74)) + 'px';
+            }
+
+            el.style.width = wiText + 'px';
+            el.style.top = (oTran.y + 19 + window.pageYOffset) + 'px';
+        }
+        else {
+            s = '<b>' + oTran.text[0].toUpperCase() + oTran.text.substr(1).trim() + '</b>: ' + oTran.mean_vi[0].toUpperCase() + oTran.mean_vi.substr(1);
+            wiText -= 25;
+            el.style.width = wiText + 'px';
+            el.style.top = (oTran.y + 17 + window.pageYOffset) + 'px';
+            if (oTran.x + wiText > wiBrowser) oTran.x = wiBrowser - (wiText + 50);
+            el.style.left = oTran.x + 'px';
+        }
+
+        el.innerHTML = s;
+        el.style.display = 'inline-block';
+
+        if (oTran.cached != true) {
+            //var sel = window.getSelection();
+            //if (sel.rangeCount) {
+            //    range = sel.getRangeAt(0);
+            //    range.deleteContents();
+            //    var node = document.createElement('i');
+            //    node.className = '___translated';
+            //    node.setAttribute('title', s);
+            //    var id = oTran.id;
+            //    node.setAttribute('id', id);
+            //    node.innerHTML = oTran.text;
+            //    //range.insertNode(document.createTextNode('[' + s + ']'));
+            //    range.insertNode(node);
+            //}
+            window.getSelection().empty();
+        }
     }
 }
 

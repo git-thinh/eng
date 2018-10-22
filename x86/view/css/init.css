@@ -47,3 +47,44 @@ h1 {
 div, p, li {
     line-height: 35px;    
 }
+/*****************/
+#___box_tran {
+    position: absolute;
+    background-color: #ddd;
+    top: 0px;
+    right: 0px;
+    width: auto;
+    height: auto;
+    display: inline-block;
+    z-index: 9999999;
+    border: 1px solid orangered;
+    overflow: hidden;
+    font-family: Arial;
+    font-size: 0.7em;
+    padding: 5px 0 5px 3px;
+    text-align: center;
+    border-radius: 4px;
+    line-height: 27px;
+}
+
+    #___box_tran b,
+    #___box_tran p {
+        text-align: left;
+        display: inline-block;
+        line-height: 25px;
+        font-size: 1.3em;
+    }
+
+        #___box_tran b.lines,
+        #___box_tran p.lines {
+            width: 100%;
+            padding-left: 5px;
+        }
+
+        #___box_tran b.lines {
+            padding-top: 7px;
+        }
+
+        #___box_tran p.lines {
+            font-size: 1em;
+        }
