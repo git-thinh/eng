@@ -6,14 +6,16 @@ var _config = {
     HighLight: false,
     StarThisLink: false,
 };
-var _menus = [];
-var _links = [];
 
+var _menus = [], _links = [], _words = [], _sentences = [];
+var _page_words = [], _page_sentences = [];
+
+var f_log = 1 ? console.log.bind(console, '[LOG] ') : function () { };
+////////////////////////////////////////////////////////////
 var _CLIENT_ID = 1;
 var _GET_ID = function () { var date = new Date(); var id = _CLIENT_ID + ("0" + (date.getMonth() + 1)).slice(-2) + ("0" + date.getDate()).slice(-2) + ("0" + date.getHours()).slice(-2) + ("0" + date.getMinutes()).slice(-2) + ("0" + date.getSeconds()).slice(-2) + (date.getMilliseconds() + Math.floor(Math.random() * 100)).toString().substring(0, 3); return parseInt(id); };
 var APP_INFO = { Width: $(window).width() };
-
-var f_log = 1 ? console.log.bind(console, '[LOG] ') : function () { };
+////////////////////////////////////////////////////////////
 
 function f_post(url, data, callback_ok, callback_fail) {
     var xhttp = new XMLHttpRequest();
@@ -89,11 +91,13 @@ function f_menu_Init() {
                 switch (items[i].fun) {
                     case 'f_editor_autoSave':
                         _config.AutoSave = items[i].value;
-                        f_editor_autoSaveRun();
                         if (_config.AutoSave) {
+                            f_editor_autoSaveRun();
                             //var fileHtm = f_html_getPathFile();
                             //var not_exist = f_api_existFile(fileHtm);
-                            if (_config.IsCached == false)
+                            if (_config.IsCached)
+                                _config.HtmlChanged = true;
+                            else
                                 f_editor_Save(true);
                         }
                         break;
@@ -173,7 +177,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
 
     _links = f_link_getList();
-    //f_link_Search();
+    f_english_page_exportWordsAndSentences();
+    f_english_Keywords();
 });
 
 ////////////////////////////////////////////////////////////
@@ -210,7 +215,7 @@ function f_editor_autoSave(menu) {
             //console.log('change', event);
         })
         .ok(function (_value) {
-            var val = Number(_value); 
+            var val = Number(_value);
             if (val.toString() == 'NaN' || val < 0) {
                 f_alert('Please input is number >= 0', function () { f_editor_autoSave(menu); });
                 return;
@@ -264,21 +269,23 @@ function f_editor_Save(isAutoSave) {
 
 ////////////////////////////////////////////////////////////
 
-function f_english_Keywords(menu) {
+function f_english_page_exportWordsAndSentences() {
     var text = _.startCase(document.body.innerText.trim());
     var words = text.split(' ');
     words = _.filter(words, function (wo) { return wo.length > 3; });
     words = _.uniqBy(words, function (e) { return e; });
     words = _.orderBy(words);
-    var data = _.map(words, function (wo, index) { return { recid: index + 1, word: wo }; });
+    _page_words = _.map(words, function (wo, index) { return { recid: index + 1, word: wo }; });
+}
 
-
+function f_english_Keywords(menu) {
     $().w2layout({
         name: 'layout_words',
         padding: 0,
         panels: [
             { type: 'top', size: '30px', resizable: false, style: 'padding:5px;overflow:hidden;' },
-            { type: 'main', minSize: 300 }
+            { type: 'main', minSize: 100 },
+            { type: 'right', size: '70%', resizable: false, style: 'padding:5px;overflow:hidden;' },
         ]
     });
 
@@ -306,10 +313,10 @@ function f_english_Keywords(menu) {
         },
         multiSelect: true,
         columns: [
-            { field: 'recid', caption: 'Index', size: '10%' },
+            { field: 'recid', caption: 'Index', size: '35px' },
             { field: 'word', caption: 'Word', size: '90%', sortable: true, searchable: true }
         ],
-        records: data,
+        records: _page_words,
         onClick: function (event) {
             //var grid = this;
             //var form = {};
@@ -357,14 +364,107 @@ function f_english_Keywords(menu) {
 
 function f_english_WordsTranslated(menu) {
     f_get('//api/translate/all', function (text) {
-        f_log(text);
+        //f_log(text);
+        var o = JSON.parse(text), words = [], _recid = 0;
+        _.forEach(o, function (_val, _key) { _recid++; words.push({ recid: _recid, text: _key, mean_vi: _val }); });
+        //f_log(words);
+        
+        $().w2layout({
+            name: 'layout_words_translated',
+            padding: 0,
+            panels: [
+                { type: 'top', size: '30px', resizable: false, style: 'padding:5px;overflow:hidden;' },
+                { type: 'main', minSize: 300 }
+            ]
+        });
+
+        $().w2grid({
+            name: 'grid_words_translated',
+            show: {
+                header: false,  // indicates if header is visible
+                toolbar: false,  // indicates if toolbar is visible
+                footer: true,  // indicates if footer is visible
+                columnHeaders: false,   // indicates if columns is visible
+                lineNumbers: false,  // indicates if line numbers column is visible
+                expandColumn: false,  // indicates if expand column is visible
+                selectColumn: true,  // indicates if select column is visible
+                emptyRecords: true,   // indicates if empty records are visible
+                toolbarReload: false,   // indicates if toolbar reload button is visible
+                toolbarColumns: false,   // indicates if toolbar columns button is visible
+                toolbarSearch: false,   // indicates if toolbar search controls are visible
+                toolbarAdd: false,   // indicates if toolbar add new button is visible
+                toolbarEdit: false,   // indicates if toolbar edit button is visible
+                toolbarDelete: false,   // indicates if toolbar delete button is visible
+                toolbarSave: false,   // indicates if toolbar save button is visible
+                selectionBorder: false,   // display border around selection (for selectType = 'cell')
+                recordTitles: false,   // indicates if to define titles for records
+                skipRecords: false    // indicates if skip records should be visible
+            },
+            multiSelect: true,
+            columns: [
+                { field: 'recid', caption: 'Index', size: '15px' },
+                { field: 'text', caption: 'Word', size: '50%', sortable: true, searchable: true },
+                { field: 'mean_vi', caption: 'Mean', size: '45%', sortable: true, searchable: true },
+            ],
+            records: words,
+            onClick: function (event) {
+                //var grid = this;
+                //var form = {};
+                //event.onComplete = function () {
+                //    var sel = grid.getSelection();
+                //    if (sel.length == 1) {
+                //        form.recid = sel[0];
+                //        form.record = $.extend(true, {}, grid.get(sel[0]));
+                //    } else {
+                //    }
+                //}
+            }
+        });
+
+        w2popup.open({
+            title: 'Words Translated',
+            width: 900,
+            height: 600,
+            modal: true,
+            showMax: true,
+            body: '<div id="popup_words_translated" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0;"></div>',
+            onOpen: function (event) {
+                event.onComplete = function () {
+                    document.body.style.overflowY = 'hidden';
+
+                    var s = '<input type=text class=popup_search_txt placeholder="Search ..." onkeypress="if(event.keyCode == 13)  w2ui.grid_words_translated.search(\'text\', this.value); " /><button onclick="f_english_WordsTranslated_Save()" class=popup_button>Save</button>'
+
+                    $('#w2ui-popup #popup_words_translated').w2render('layout_words_translated');
+                    w2ui.layout_words_translated.content('top', s);
+                    w2ui.layout_words_translated.content('main', w2ui.grid_words_translated);
+
+                    w2popup.toggle();
+                };
+            },
+            onClose: function (event) {
+                event.onComplete = function () {
+                    document.body.style.overflowY = 'auto';
+                };
+            },
+            onToggle: function (event) {
+                event.onComplete = function () {
+                }
+            }
+        });
+        /////////////////////
     });
 }
+
+function f_english_WordsTranslated_Save() { }
 
 function f_english_Translate() {
     if (_SELECT_OBJ != null) {
         var otran = JSON.parse(JSON.stringify(_SELECT_OBJ));
         f_log('TRANSLATE ', otran);
+        var text = otran.text.toLowerCase().trim();
+
+        if (_.some(_words, function (w) { return w == text; }) == false) _words.push(text);
+
         f_post('//api/translate/v1', otran.text, function (_res) {
             f_log('OK', _res);
             if (_res && _res.length > 0) {
@@ -637,7 +737,6 @@ function f_link_Save() {
 }
 
 ////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
 
 var _SELECT_OBJ = { x: 0, y: 0, text: '', id: '' };
 
