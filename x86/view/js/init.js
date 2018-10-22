@@ -355,6 +355,12 @@ function f_english_Keywords(menu) {
     });
 }
 
+function f_english_WordsTranslated(menu) {
+    f_get('//api/translate/all', function (text) {
+        f_log(text);
+    });
+}
+
 function f_english_Translate() {
     if (_SELECT_OBJ != null) {
         var otran = JSON.parse(JSON.stringify(_SELECT_OBJ));

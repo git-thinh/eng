@@ -1,1 +1,80 @@
-[{"type":"api","text":"Reload","fun":"reload","id":0},{"type":"api","text":"Show DevTool","fun":"devtool","id":1},{"text":"Hight light [OFF]","fun":"f_editor_highLightOpen","value":false,"id":2},{"text":"Auto Save [ON]","fun":"f_editor_autoSave","value":5000,"id":3},{"text":"Clear All High Light","fun":"f_editor_highLightClearAll","id":4},{"text":"Keywords","fun":"f_english_Keywords","id":5},{"text":"Grammar","fun":"f_english_Grammar","id":6},{"text":"Player","fun":"f_english_Player","id":7},{"text":"Sentences","fun":"f_english_Sentences","id":8},{"text":"Link Search","fun":"f_link_Search","id":9},{"text":"Link Bookmark","fun":"f_link_Bookmark","id":10},{"text":"Save Document","fun":"f_editor_Save","id":11},{"text":"Star this link","fun":"f_link_setStar","id":12},{"text":"Close Menu","id":13}]
+[
+  {
+    "type": "api",
+    "text": "Reload",
+    "fun": "reload",
+    "id": 0
+  },
+  {
+    "type": "api",
+    "text": "Show DevTool",
+    "fun": "devtool",
+    "id": 1
+  },
+  {
+    "text": "Hight light [OFF]",
+    "fun": "f_editor_highLightOpen",
+    "value": false,
+    "id": 2
+  },
+  {
+    "text": "Auto Save [ON]",
+    "fun": "f_editor_autoSave",
+    "value": 5000,
+    "id": 3
+  },
+  {
+    "text": "Clear All High Light",
+    "fun": "f_editor_highLightClearAll",
+    "id": 4
+  },
+  {
+    "text": "Words Translated",
+    "fun": "f_english_WordsTranslated",
+    "id": 5
+  },
+  {
+    "text": "Keywords",
+    "fun": "f_english_Keywords",
+    "id": 6
+  },
+  {
+    "text": "Grammar",
+    "fun": "f_english_Grammar",
+    "id": 7
+  },
+  {
+    "text": "Player",
+    "fun": "f_english_Player",
+    "id": 8
+  },
+  {
+    "text": "Sentences",
+    "fun": "f_english_Sentences",
+    "id": 9
+  },
+  {
+    "text": "Link Search",
+    "fun": "f_link_Search",
+    "id": 10
+  },
+  {
+    "text": "Link Bookmark",
+    "fun": "f_link_Bookmark",
+    "id": 11
+  },
+  {
+    "text": "Save Document",
+    "fun": "f_editor_Save",
+    "id": 12
+  },
+  {
+    "text": "Star this link",
+    "fun": "f_link_setStar",
+    "id": 13
+  },
+  {
+    "text": "Close Menu",
+    "id": 14
+  }
+]

@@ -82,16 +82,11 @@ namespace eng
 
     public class ApiHandler : ISchemeHandler
     {
-        static ConcurrentDictionary<string, string> _TRANSLATE = new ConcurrentDictionary<string, string>();
-
-        public ApiHandler()
+        readonly ICache _cache;
+        public ApiHandler(ICache cache)
         {
-        }
-
-        ~ApiHandler()
-        {
-            _TRANSLATE.Clear();
-        }
+            _cache = cache;
+        } 
 
         public bool ProcessRequestAsync(IRequest request, SchemeHandlerResponse response, OnRequestCompletedHandler requestCompletedCallback)
         {
@@ -111,7 +106,14 @@ namespace eng
                     response.MimeType = mimeType;
                     requestCompletedCallback();
                     return true;
+                case "/translate/all": 
+                    bytes = Encoding.UTF8.GetBytes(_cache.f_translate_GetAllJson());
+                    response.ResponseStream = new MemoryStream(bytes);
+                    response.MimeType = mimeType;
+                    requestCompletedCallback();
+                    return true;
                 case "/translate/v1":
+                    #region
                     mimeType = "text/plain";
                     if (string.IsNullOrWhiteSpace(input))
                     {
@@ -122,10 +124,10 @@ namespace eng
                     }
                     else
                     {
-                        string text = input.Trim().ToLower();
-                        if (_TRANSLATE.ContainsKey(text))
+                        string text = input.Trim().ToLower(), mean = _cache.f_translate_GetIfExist(text, string.Empty);
+                        if (mean.Length > 0)
                         {
-                            bytes = Encoding.UTF8.GetBytes(_TRANSLATE[text]);
+                            bytes = Encoding.UTF8.GetBytes(mean);
                             response.ResponseStream = new MemoryStream(bytes);
                             response.MimeType = mimeType;
                             requestCompletedCallback();
@@ -137,7 +139,8 @@ namespace eng
                                 if (_otran.mean_vi.Contains(':')) _otran.success = false;
                                 if (_otran.success)
                                 {
-                                    if (!_TRANSLATE.ContainsKey(text)) _TRANSLATE.TryAdd(text, _otran.mean_vi);
+                                    _cache.f_translate_AddIfNotExist(text, _otran.mean_vi);
+
                                     bytes = Encoding.UTF8.GetBytes(_otran.mean_vi);
                                     response.ResponseStream = new MemoryStream(bytes);
                                     response.MimeType = mimeType;
@@ -154,6 +157,7 @@ namespace eng
                         }
                     }
                     return true;
+                #endregion
                 case "/link/list":
                     //var headers = request.GetHeaders();
 
@@ -177,11 +181,15 @@ namespace eng
 
     public class ApiHandlerFactory : ISchemeHandlerFactory
     {
-        public ApiHandlerFactory() : base() { }
+        readonly ICache _cache;
+        public ApiHandlerFactory(ICache cache)
+        {
+            _cache = cache;
+        }
 
         public ISchemeHandler Create()
         {
-            return new ApiHandler();
+            return new ApiHandler(_cache);
         }
     }
 
