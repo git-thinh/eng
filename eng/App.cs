@@ -37,8 +37,9 @@ namespace eng
             Settings settings = new Settings();
             
             if (!CEF.Initialize(settings)) return;
-            CEF.RegisterScheme("res", "api", new ApiHandlerFactory());
-            CEF.RegisterScheme("res", "local", new LocalSchemeHandlerFactory());
+            //CEF.RegisterScheme("res", "local", new LocalSchemeHandlerFactory());
+            CEF.RegisterScheme("http", "api", new ApiHandlerFactory());
+            CEF.RegisterScheme("https", "api", new ApiHandlerFactory());
             CEF.RegisterScheme("http", new HttpHandlerFactory());
             CEF.RegisterScheme("https", new HttpHandlerFactory());
             fBrowser f = new fBrowser();

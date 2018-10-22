@@ -82,7 +82,16 @@ namespace eng
 
     public class ApiHandler : ISchemeHandler
     {
-        public ApiHandler() { }
+        static ConcurrentDictionary<string, string> _TRANSLATE = new ConcurrentDictionary<string, string>();
+
+        public ApiHandler()
+        {
+        }
+
+        ~ApiHandler()
+        {
+            _TRANSLATE.Clear();
+        }
 
         public bool ProcessRequestAsync(IRequest request, SchemeHandlerResponse response, OnRequestCompletedHandler requestCompletedCallback)
         {
@@ -101,6 +110,49 @@ namespace eng
                     response.ResponseStream = new MemoryStream(bytes);
                     response.MimeType = mimeType;
                     requestCompletedCallback();
+                    return true;
+                case "/translate/v1":
+                    mimeType = "text/plain";
+                    if (string.IsNullOrWhiteSpace(input))
+                    {
+                        bytes = Encoding.UTF8.GetBytes(string.Empty);
+                        response.ResponseStream = new MemoryStream(bytes);
+                        response.MimeType = mimeType;
+                        requestCompletedCallback();
+                    }
+                    else
+                    {
+                        string text = input.Trim().ToLower();
+                        if (_TRANSLATE.ContainsKey(text))
+                        {
+                            bytes = Encoding.UTF8.GetBytes(_TRANSLATE[text]);
+                            response.ResponseStream = new MemoryStream(bytes);
+                            response.MimeType = mimeType;
+                            requestCompletedCallback();
+                        }
+                        else
+                        {
+                            GooTranslateService_v1.TranslateAsync(new oEN_TRANSLATE_GOOGLE_MESSAGE(), input.Trim(), "en", "vi", string.Empty, (_otran) =>
+                            {
+                                if (_otran.mean_vi.Contains(':')) _otran.success = false;
+                                if (_otran.success)
+                                {
+                                    if (!_TRANSLATE.ContainsKey(text)) _TRANSLATE.TryAdd(text, _otran.mean_vi);
+                                    bytes = Encoding.UTF8.GetBytes(_otran.mean_vi);
+                                    response.ResponseStream = new MemoryStream(bytes);
+                                    response.MimeType = mimeType;
+                                    requestCompletedCallback();
+                                }
+                                else
+                                {
+                                    bytes = Encoding.UTF8.GetBytes(string.Empty);
+                                    response.ResponseStream = new MemoryStream(bytes);
+                                    response.MimeType = mimeType;
+                                    requestCompletedCallback();
+                                }
+                            });
+                        }
+                    }
                     return true;
                 case "/link/list":
                     //var headers = request.GetHeaders();
@@ -341,7 +393,7 @@ namespace eng
         public bool ProcessRequestAsync(IRequest request, SchemeHandlerResponse response, OnRequestCompletedHandler requestCompletedCallback)
         {
             if (request.Method != "GET") return false;
-            string url = request.Url, mimeType = "text/html", text, accept = string.Empty;
+            string url = request.Url, mimeType = "text/html", text = string.Empty, accept = string.Empty;
             Uri uri = new Uri(url);
 
             #region [ VIEW ]
@@ -393,19 +445,21 @@ namespace eng
 
             string file = "view/html/" + uri.Host + "/" + string.Join("-", uri.AbsolutePath.Split('/').Where(x => x.Trim().Length > 0).ToArray()) + ".htm",
                 _cache = string.Empty;
+
             if (File.Exists(file))
             {
                 text = File.ReadAllText(file);
-                _cache = "<script> console.log('CACHE = ','" + file + "'); if(_config) _config.IsCached = true; </script>";
+                if (!string.IsNullOrWhiteSpace(text))
+                    _cache = "<script> console.log('CACHE = ','" + file + "'); if(_config) _config.IsCached = true; </script>";
             }
-            else
+
+            if (_cache.Length == 0)
             {
                 text = f_link_getHtmlOnline(url);
                 _cache = "<script> console.log('ONLINE = ','" + url + "'); if(_config) _config.IsCached = false; </script>";
             }
 
-            if (text == null) text = "";
-            else
+            if (text != null && text.Length > 0)
             {
                 if (File.Exists("view/temp-head.html")) _temp_head = File.ReadAllText("view/temp-head.html");
                 if (File.Exists("view/temp-end.html")) _temp_end = File.ReadAllText("view/temp-end.html");

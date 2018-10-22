@@ -9,8 +9,21 @@ var _config = {
 var _menus = [];
 var _links = [];
 
+var _CLIENT_ID = 1;
+var _GET_ID = function () { var date = new Date(); var id = _CLIENT_ID + ("0" + (date.getMonth() + 1)).slice(-2) + ("0" + date.getDate()).slice(-2) + ("0" + date.getHours()).slice(-2) + ("0" + date.getMinutes()).slice(-2) + ("0" + date.getSeconds()).slice(-2) + (date.getMilliseconds() + Math.floor(Math.random() * 100)).toString().substring(0, 3); return parseInt(id); };
+
 var f_log = 1 ? console.log.bind(console, '[LOG] ') : function () { };
 
+function f_post(url, data, callback_ok, callback_fail) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200)
+            if (callback_ok) callback_ok(xhttp.responseText);
+            else if (callback_fail) callback_fail();
+    };
+    xhttp.open('POST', url, true);
+    xhttp.send(data);
+}
 function f_get(url, callback_ok, callback_fail) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
@@ -18,7 +31,7 @@ function f_get(url, callback_ok, callback_fail) {
             if (callback_ok) callback_ok(xhttp.responseText);
             else if (callback_fail) callback_fail();
     };
-    xhttp.open("GET", url, true);
+    xhttp.open('GET', url, true);
     xhttp.send();
 }
 function f_api_executeByKey(menu_id) {
@@ -61,6 +74,7 @@ function f_html_getPathFile() {
         file = _.startCase(location.href.split(location.href.split('/')[2])[1].substr(1)).split(' ').join('-');
     return 'view/html/' + domain + '/' + file + '.htm';
 }
+
 ////////////////////////////////////////////////////////////
 
 function f_menu_Init() {
@@ -76,9 +90,9 @@ function f_menu_Init() {
                         _config.AutoSave = items[i].value;
                         f_editor_autoSaveRun();
                         if (_config.AutoSave) {
-                            var fileHtm = f_html_getPathFile();
-                            var not_exist = f_api_existFile(fileHtm);
-                            if (not_exist == false)
+                            //var fileHtm = f_html_getPathFile();
+                            //var not_exist = f_api_existFile(fileHtm);
+                            if (_config.IsCached == false)
                                 f_editor_Save(true);
                         }
                         break;
@@ -340,6 +354,17 @@ function f_english_Keywords(menu) {
     });
 }
 
+function f_english_Translate() {
+    if (_SELECT_OBJ != null) {
+        f_log('TRANSLATE ', _SELECT_OBJ);
+        f_post('//api/translate/v1', _SELECT_OBJ.text, function (_res) {
+            f_log('OK', _res);
+        }, function (_err) {
+            f_log('ERR', _err);
+        })
+    }
+}
+
 ////////////////////////////////////////////////////////////
 
 function f_link_getList() {
@@ -512,3 +537,76 @@ function f_link_Save() {
 }
 
 ////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+
+var _SELECT_OBJ = { x: 0, y: 0, text: '', id: '' };
+
+function f_event_processCenter(event) {
+    var type = event.type,
+        el = event.target,
+        tagName = el.tagName,
+        id = el.id,
+        text = el.innerText,
+        textSelect = '';
+
+    if (id == null || id.trim().length == 0) {
+        var id = _GET_ID();
+        el.setAttribute('id', id);
+    }
+
+    textSelect = window.getSelection().toString();
+    switch (type) {
+        case 'mousedown':
+            //if (console.clear) console.clear();
+
+            var elbox = document.getElementById('___box_tran');
+            if (elbox) elbox.style.display = 'none';
+
+            _SELECT_OBJ = { id: id, cached: false, x: event.x, y: event.y };
+            if (el.className == '___translated') _SELECT_OBJ.cached = true;
+
+            break;
+        case 'mouseup':
+            if (_SELECT_OBJ != null) {
+                _SELECT_OBJ.x = event.x;
+                _SELECT_OBJ.y = event.y;
+                if (textSelect && textSelect.trim().length > 0) _SELECT_OBJ.text = textSelect;
+            }
+            break;
+        case 'click':
+            if (_SELECT_OBJ != null) {
+                if (textSelect && textSelect.trim().length > 0) _SELECT_OBJ.text = textSelect;
+            }
+            break;
+        case 'dblclick':
+            if (_SELECT_OBJ != null) {
+                if (textSelect && textSelect.trim().length > 0) _SELECT_OBJ.text = textSelect;
+            }
+            break;
+    }
+
+    //f_log(tagName + '.' + type + ': ' + JSON.stringify(_SELECT_OBJ));
+
+    if (_SELECT_OBJ != null) {
+        if (_SELECT_OBJ.cached == true) {
+            f_displayTranslateCache(_SELECT_OBJ);
+            _SELECT_OBJ = null;
+        } else {
+            if (_SELECT_OBJ.text && _SELECT_OBJ.text.length > 0) {
+                f_english_Translate();
+                _SELECT_OBJ = null;
+            }
+        }
+    }
+
+    //f_log(tagName + '.' + type + ': ' + id + ' \r\nSELECT= ' + textSelect + ' \r\nTEXT= ', text);
+    //event.preventDefault();
+    //event.stopPropagation();
+}
+
+if (window.addEventListener) {
+    window.addEventListener("mouseup", f_event_processCenter, true);
+    window.addEventListener("mousedown", f_event_processCenter, true);
+    window.addEventListener("click", f_event_processCenter, true);
+    window.addEventListener("dblclick", f_event_processCenter, true);
+}

@@ -30,3 +30,5 @@ x86/eng.vshost.exe.manifest
 x86/eng.vshost.exe
 eng/obj/x86/Debug/TempPE/Properties.Resources.Designer.cs.dll
 eng/obj/x86/Debug/DesignTimeResolveAssemblyReferences.cache
+.vs/eng/v15/Server/sqlite3/storage.ide-wal
+.vs/eng/v15/Server/sqlite3/storage.ide-shm
