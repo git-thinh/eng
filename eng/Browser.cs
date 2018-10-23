@@ -440,6 +440,8 @@ namespace eng
 
                     return true;
                 }
+                else if (path.EndsWith(".css"))
+                    File.Create(path);
             }
 
             #endregion
@@ -474,7 +476,7 @@ namespace eng
 
                 //s = "<!--" + url + @"-->" + Environment.NewLine + @"<input id=""___title"" value=""" + title + @""" type=""hidden"">" + s;
 
-                text = _temp_head + "\r\n</head>\r\n<body>\r\n" + text + "<!--END_BODY-->" + _cache + _temp_end;
+                text = _temp_head + @"<link type=""text/css"" href=""/view/css/host/" + uri.Host + @".css"" rel=""stylesheet"" /></head><body>" + text + "<!--END_BODY-->" + _cache + _temp_end;
             }
 
             byte[] bytes = Encoding.UTF8.GetBytes(text);
@@ -484,21 +486,9 @@ namespace eng
             return true;
         }
     }
-
-    public class MyWebClient : WebClient
-    {
-        protected override WebRequest GetWebRequest(Uri address)
-        {
-            HttpWebRequest request = base.GetWebRequest(address) as HttpWebRequest;
-            request.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
-            return request;
-        }
-    }
-
+    
     public class HttpHandlerFactory : ISchemeHandlerFactory
     {
-        public HttpHandlerFactory() : base() { }
-
         public ISchemeHandler Create()
         {
             return new HttpHandler();

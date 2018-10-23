@@ -47,7 +47,8 @@ function f_api_executeByKey(menu_id) {
     }
 }
 function f_main_openUrl(url, event) {
-    var el = event.target, title = '';
+    var el, title = url;
+    if (event && event.target) el = event.target;
     if (el && el.parentElement && el.parentElement.tagName == 'A') el = el.parentElement;
     if (el && el.innerText) title = el.innerText;
     f_log(title, url);
@@ -179,7 +180,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     _links = f_link_getList();
     f_english_page_exportWordsAndSentences();
     //f_english_Keywords();
-    f_english_Sentences();
+    //f_english_Sentences();
 });
 
 ////////////////////////////////////////////////////////////
@@ -294,7 +295,7 @@ function f_english_page_exportWordsAndSentences() {
         }
     }
     _page_sentences = a;
-    f_log(_page_sentences);
+    //f_log(_page_sentences);
 }
 
 function f_english_Sentences(menu) {
@@ -836,6 +837,22 @@ function f_link_Save() {
     else
         f_alert('Save the links fail');
 
+}
+
+function f_link_goUrl(menu) {
+    w2prompt({
+        label: 'URL',
+        value: '',
+        attrs: 'style="width: 200px"',
+        title: w2utils.lang('Notification'),
+        ok_text: w2utils.lang('Ok'),
+        cancel_text: w2utils.lang('Cancel'),
+        width: 400,
+        height: 200
+    })
+   .ok(function (url) {
+       f_main_openUrl(url);
+   });
 }
 
 ////////////////////////////////////////////////////////////
