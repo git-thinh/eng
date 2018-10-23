@@ -86,7 +86,7 @@ namespace eng
         public ApiHandler(ICache cache)
         {
             _cache = cache;
-        } 
+        }
 
         public bool ProcessRequestAsync(IRequest request, SchemeHandlerResponse response, OnRequestCompletedHandler requestCompletedCallback)
         {
@@ -106,7 +106,7 @@ namespace eng
                     response.MimeType = mimeType;
                     requestCompletedCallback();
                     return true;
-                case "/translate/all": 
+                case "/translate/all":
                     bytes = Encoding.UTF8.GetBytes(_cache.f_translate_GetAllJson());
                     response.ResponseStream = new MemoryStream(bytes);
                     response.MimeType = mimeType;
@@ -197,6 +197,7 @@ namespace eng
     {
         #region
 
+        string _fix_lib = string.Empty;
         string _temp_head = string.Empty;
         string _temp_end = string.Empty;
 
@@ -296,10 +297,10 @@ namespace eng
 
             Console.WriteLine(" -> Ok: " + url);
 
-            //string title = Html.f_html_getTitle(html);
-            html = _htmlFormat(url, html);
-            //f_cacheUrl(url);
-            //CACHE.TryAdd(url, html);
+            //////string title = Html.f_html_getTitle(html);
+            //html = _htmlFormat(url, html);
+            //////f_cacheUrl(url);
+            //////CACHE.TryAdd(url, html);
 
             //string err = process.StandardError.ReadToEnd();
             process.WaitForExit();
@@ -448,9 +449,106 @@ namespace eng
             var headers = request.GetHeaders();
             if (headers.ContainsKey("Accept")) accept = headers["Accept"];
 
-            if (accept.Length == 0 || accept.Contains("text/html") == false) return false;
+            if (!accept.Contains("text/html") && !accept.Contains("text/css"))
+            {
+                Debug.WriteLine("|-> " + url);
+                return false;
+            }
 
             //if (headers.ContainsKey("Referer")) return false;
+            //if (url.Contains(".css"))
+            //{
+
+            //    return true;
+            //}
+
+            Debug.WriteLine("#-> " + url);
+
+            text = f_link_getHtmlOnline(url);
+
+            if (accept.Contains("text/html"))
+            {
+                string head = text.Split(new string[] { "<body" }, StringSplitOptions.None)[0], s = "<div" + text.Substring(head.Length + 5);
+                int posH1 = s.ToLower().IndexOf("<h1");
+                if (posH1 != -1) s = s.Substring(posH1, s.Length - posH1);
+
+                head = Html.f_html_Format(url, head);
+                s = Html.f_html_Format(url, s);
+
+                if (File.Exists("view/fix.html")) _fix_lib = File.ReadAllText("view/fix.html");
+                text = head.Replace("<head>", @"<head><meta http-equiv=""Content-Type"" content=""text/html; charset=utf-8"" />") + "<body>" + s + _fix_lib;
+                mimeType = "text/html";
+            }
+            else
+                mimeType = "text/css";
+
+            byte[] bytes = Encoding.UTF8.GetBytes(text);
+            response.ResponseStream = new MemoryStream(bytes);
+            response.MimeType = mimeType;
+            requestCompletedCallback();
+            return true;
+        }
+
+        public bool ProcessRequestAsync2(IRequest request, SchemeHandlerResponse response, OnRequestCompletedHandler requestCompletedCallback)
+        {
+            if (request.Method != "GET") return false;
+            string url = request.Url, mimeType = "text/html", text = string.Empty, accept = string.Empty;
+            Uri uri = new Uri(url);
+
+            #region [ VIEW ]
+
+            if (url.Contains("/view/"))
+            {
+                string path = uri.AbsolutePath.Substring(1).Replace('/', '\\');
+                if (File.Exists(path))
+                {
+                    string ext = path.Substring(path.Length - 3, 3);
+                    switch (ext)
+                    {
+                        case "tml":
+                            mimeType = "text/html";
+                            break;
+                        case ".js":
+                            mimeType = "text/javascript";
+                            break;
+                        case "css":
+                            mimeType = "text/css";
+                            break;
+                    }
+
+                    text = File.ReadAllText(path);
+
+                    //string body = File.ReadAllText(path);
+                    //int posH1 = body.ToLower().IndexOf("<h1");
+                    //if (posH1 != -1) body = body.Substring(posH1, body.Length - posH1);
+                    //string temp = File.ReadAllText("view/view.html");
+                    //string htm = temp + body + "</body></html>";
+
+                    byte[] buf = Encoding.UTF8.GetBytes(text);
+                    response.ResponseStream = new MemoryStream(buf);
+                    response.MimeType = mimeType;
+                    requestCompletedCallback();
+
+                    return true;
+                }
+                //else if (path.EndsWith(".css")) File.Create(path);
+            }
+
+            #endregion
+
+            var headers = request.GetHeaders();
+            if (headers.ContainsKey("Accept")) accept = headers["Accept"];
+
+            if (!accept.Contains("text/html") && !accept.Contains("text/css"))
+                return false;
+
+            //if (headers.ContainsKey("Referer")) return false;
+            if (url.Contains(".css"))
+            {
+
+                return true;
+            }
+
 
             string file = "view/html/" + uri.Host + "/" + string.Join("-", uri.AbsolutePath.Split('/').Where(x => x.Trim().Length > 0).ToArray()) + ".htm",
                 _cache = string.Empty;
@@ -485,7 +583,7 @@ namespace eng
             return true;
         }
     }
-    
+
     public class HttpHandlerFactory : ISchemeHandlerFactory
     {
         public ISchemeHandler Create()

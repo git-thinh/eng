@@ -18,11 +18,21 @@ var APP_INFO = { Width: $(window).width() };
 ////////////////////////////////////////////////////////////
 
 function f_insertElement() {
-    var addedElement = document.createElement('p');
-    addedElement.appendChild(document.createTextNode('Hello, world!'));
+    //var addedElement = document.createElement('p');
+    //addedElement.appendChild(document.createTextNode('Hello, world!'));
+    
+    var ___canvas = document.createElement('canvas');
+    ___canvas.setAttribute('id', '___canvas');
 
-    var body = document.body;
-    body.insertBefore(addedElement, body.firstChild);
+    var ___box_tran = document.createElement('div');
+    ___box_tran.setAttribute('id', '___box_tran');
+
+    var ___menu_context = document.createElement('div');
+    ___menu_context.setAttribute('id', '___menu_context');
+
+    document.body.insertBefore(___canvas, document.body.firstChild);
+    document.body.insertBefore(___box_tran, document.body.firstChild);
+    document.body.insertBefore(___menu_context, document.body.firstChild);
 }
 
 function f_post(url, data, callback_ok, callback_fail) {
@@ -168,6 +178,7 @@ function f_menu_Hide() {
 
 document.addEventListener("DOMContentLoaded", function (event) {
     f_log('DOMContentLoaded');
+    f_insertElement();
 
     window.oncontextmenu = function (e) {
         f_menu_Show(e);

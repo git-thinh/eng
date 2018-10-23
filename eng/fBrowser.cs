@@ -23,6 +23,7 @@ namespace eng
             URL = "https://www.w3schools.com/js/default.asp";
             URL = "https://english.stackexchange.com/questions/87789/what-is-going-on-in-this-sentence";
             URL = "https://stackoverflow.com/questions/tagged/javascript?sort=votes&pageSize=15";
+            //URL = "https://www.codeproject.com/Articles/10890/Fastest-C-Case-Insenstive-String-Replace";
 
             ui_browser = new WebView("about:blank", new CefSharp.BrowserSettings()
             {

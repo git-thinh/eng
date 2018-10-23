@@ -135,44 +135,44 @@ namespace System
         {
             string si = string.Empty;
             s = Regex.Replace(s, @"<script[^>]*>[\s\S]*?</script>", string.Empty);
-            s = Regex.Replace(s, @"<style[^>]*>[\s\S]*?</style>", string.Empty);
+            //s = Regex.Replace(s, @"<style[^>]*>[\s\S]*?</style>", string.Empty);
             s = Regex.Replace(s, @"<noscript[^>]*>[\s\S]*?</noscript>", string.Empty);
             s = Regex.Replace(s, @"(?s)(?<=<!--).+?(?=-->)", string.Empty).Replace("<!---->", string.Empty);
 
             //s = Regex.Replace(s, @"<noscript[^>]*>[\s\S]*?</noscript>", string.Empty);
             //s = Regex.Replace(s, @"<noscript[^>]*>[\s\S]*?</noscript>", string.Empty);
             //s = Regex.Replace(s, @"</?(?i:embed|object|frameset|frame|iframe|meta|link)(.|\n|\s)*?>", string.Empty, RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            s = Regex.Replace(s, @"</?(?i:base|nav|form|input|fieldset|button|link|symbol|path|canvas|use|ins|svg|embed|object|frameset|frame|meta|noscript)(.|\n|\s)*?>", string.Empty, RegexOptions.Singleline | RegexOptions.IgnoreCase);
+            s = Regex.Replace(s, @"</?(?i:base|nav|form|input|fieldset|button|symbol|path|canvas|use|ins|svg|embed|object|frameset|frame|meta|noscript)(.|\n|\s)*?>", string.Empty, RegexOptions.Singleline | RegexOptions.IgnoreCase);
 
-            // Remove attribute style="padding:10px;..."
-            s = Regex.Replace(s, @"<([^>]*)(\sstyle="".+?""(\s|))(.*?)>", string.Empty);
-            s = s.Replace(@">"">", ">");
+            //// Remove attribute style="padding:10px;..."
+            //s = Regex.Replace(s, @"<([^>]*)(\sstyle="".+?""(\s|))(.*?)>", string.Empty);
+            //s = s.Replace(@">"">", ">");
 
             string[] lines = s.Split(new char[] { '\r', '\n' }, StringSplitOptions.None).Select(x => x.Trim()).Where(x => x.Length > 0).ToArray();
             s = string.Join(Environment.NewLine, lines);
 
-            int pos = s.ToLower().IndexOf("<body");
-            if (pos > 0)
-            {
-                s = s.Substring(pos + 5);
-                pos = s.IndexOf('>') + 1;
-                s = s.Substring(pos, s.Length - pos).Trim();
-            }
+            ////////int pos = s.ToLower().IndexOf("<body");
+            ////////if (pos > 0)
+            ////////{
+            ////////    s = s.Substring(pos + 5);
+            ////////    pos = s.IndexOf('>') + 1;
+            ////////    s = s.Substring(pos, s.Length - pos).Trim();
+            ////////}
 
-            s = s
-                .Replace(@" data-src=""", @" src=""")
-                .Replace(@"src=""//", @"src=""http://");
+            ////////s = s
+            ////////    .Replace(@" data-src=""", @" src=""")
+            ////////    .Replace(@"src=""//", @"src=""http://");
 
-            var mts = Regex.Matches(s, "<img.+?src=[\"'](.+?)[\"'].*?>", RegexOptions.IgnoreCase);
-            if (mts.Count > 0)
-            {
-                foreach (Match mt in mts)
-                {
-                    string src = mt.Groups[1].Value;
-                    //s = s.Replace(mt.ToString(), string.Format("{0}{1}{2}", "<p class=box_img___>", mt.ToString(), "</p>"));
-                    s = s.Replace(mt.ToString(), @"<p class=___box_img><input class=""___img_src"" value=""" + src + @""" type=""hidden"" /></p>");
-                }
-            }
+            ////////var mts = Regex.Matches(s, "<img.+?src=[\"'](.+?)[\"'].*?>", RegexOptions.IgnoreCase);
+            ////////if (mts.Count > 0)
+            ////////{
+            ////////    foreach (Match mt in mts)
+            ////////    {
+            ////////        string src = mt.Groups[1].Value;
+            ////////        s = s.Replace(mt.ToString(), string.Format("{0}{1}{2}", "<p class=box_img___>", mt.ToString(), "</p>"));
+            ////////        s = s.Replace(mt.ToString(), @"<p class=___box_img><input class=""___img_src"" value=""" + src + @""" type=""hidden"" /></p>");
+            ////////    }
+            ////////}
             s = s.Replace("</body>", string.Empty).Replace("</html>", string.Empty).Trim();
 
             return s;
