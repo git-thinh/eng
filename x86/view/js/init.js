@@ -178,7 +178,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     _links = f_link_getList();
     f_english_page_exportWordsAndSentences();
-    f_english_Keywords();
+    //f_english_Keywords();
+    f_english_Sentences();
 });
 
 ////////////////////////////////////////////////////////////
@@ -278,17 +279,105 @@ function f_english_page_exportWordsAndSentences() {
     words = _.orderBy(words);
     _page_words = _.map(words, function (wo, index) { return { recid: index + 1, word: wo }; });
 
-    //var a = _.filter(_.map(s.split('.').join('|').split('\n').join('|').split('|'), function (si) { return si.trim(); }), function (si2) { return si2.split(' ').length > 4; });
-    //f_log(a);
-
-
-    var ps = document.querySelectorAll('p'), a = [];
+    var ps = document.querySelectorAll('p'), a = [], _recid = 0;
     for (var i = 0; i < ps.length; i++) {
         var el = ps[i], tem = el.innerText;
         if (tem == null || tem.split(' ').length < 5) continue;
-        a.push(tem);
+        var ai = tem.split('.');
+        for (var j = 0; j < ai.length; j++) {
+            var sen = ai[j].trim();
+            if (sen.indexOf('Not: ') == 0) continue;
+            if (sen.length > 0 && sen.split(' ').length > 3) {
+                _recid++;
+                a.push({ recid: _recid, text: sen });
+            }
+        }
     }
-    f_log(a);
+    _page_sentences = a;
+    f_log(_page_sentences);
+}
+
+function f_english_Sentences(menu) {
+    $().w2layout({
+        name: 'layout_sentences',
+        padding: 0,
+        panels: [
+            { type: 'top', size: '30px', resizable: false, style: 'padding:5px;overflow:hidden;' },
+            { type: 'main', minSize: 100 },
+        ]
+    });
+
+    $().w2grid({
+        name: 'grid_sentences',
+        show: {
+            header: false,  // indicates if header is visible
+            toolbar: false,  // indicates if toolbar is visible
+            footer: true,  // indicates if footer is visible
+            columnHeaders: false,   // indicates if columns is visible
+            lineNumbers: false,  // indicates if line numbers column is visible
+            expandColumn: false,  // indicates if expand column is visible
+            selectColumn: true,  // indicates if select column is visible
+            emptyRecords: true,   // indicates if empty records are visible
+            toolbarReload: false,   // indicates if toolbar reload button is visible
+            toolbarColumns: false,   // indicates if toolbar columns button is visible
+            toolbarSearch: false,   // indicates if toolbar search controls are visible
+            toolbarAdd: false,   // indicates if toolbar add new button is visible
+            toolbarEdit: false,   // indicates if toolbar edit button is visible
+            toolbarDelete: false,   // indicates if toolbar delete button is visible
+            toolbarSave: false,   // indicates if toolbar save button is visible
+            selectionBorder: false,   // display border around selection (for selectType = 'cell')
+            recordTitles: false,   // indicates if to define titles for records
+            skipRecords: false    // indicates if skip records should be visible
+        },
+        multiSelect: true,
+        columns: [
+            { field: 'recid', caption: 'Index', size: '35px' },
+            { field: 'text', caption: 'Text', size: '90%', sortable: true, searchable: true }
+        ],
+        records: _page_sentences,
+        onClick: function (event) {
+            //var grid = this;
+            //var form = {};
+            //event.onComplete = function () {
+            //    var sel = grid.getSelection();
+            //    if (sel.length == 1) {
+            //        form.recid = sel[0];
+            //        form.record = $.extend(true, {}, grid.get(sel[0]));
+            //    } else {
+            //    }
+            //}
+        }
+    });
+
+    w2popup.open({
+        title: 'Sentences',
+        width: 900,
+        height: 600,
+        modal: true,
+        showMax: true,
+        body: '<div id="popup_sentences" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0;"></div>',
+        onOpen: function (event) {
+            event.onComplete = function () {
+                document.body.style.overflowY = 'hidden';
+
+                $('#w2ui-popup #popup_sentences').w2render('layout_sentences');
+                w2ui.layout_sentences.content('top', '<input type=text class=popup_right_search_txt placeholder="Search ..." onkeypress="if(event.keyCode == 13)  w2ui.grid_sentences.search(\'word\', this.value); " />');
+                w2ui.layout_sentences.content('main', w2ui.grid_sentences);
+
+                //$('#w2ui-popup #grid_sentences').w2render('grid_sentences');
+                w2popup.toggle();
+            };
+        },
+        onClose: function (event) {
+            event.onComplete = function () {
+                document.body.style.overflowY = 'auto';
+            };
+        },
+        onToggle: function (event) {
+            event.onComplete = function () {
+            }
+        }
+    });
 }
 
 function f_english_Keywords(menu) {
