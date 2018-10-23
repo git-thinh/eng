@@ -177,8 +177,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
     }
 
-    _links = f_link_getList();
-    f_english_page_exportWordsAndSentences();
+    //_links = f_link_getList();
+    //f_english_page_exportWordsAndSentences();
     //f_english_Keywords();
     //f_english_Sentences();
 });
@@ -246,27 +246,27 @@ function f_editor_autoSaveRun() {
 }
 
 function f_editor_Save(isAutoSave) {
-    //w2popup.lock('Saving document ...', true);
-    var fileHtm = f_html_getPathFile();
-    var data = document.body.innerHTML.split('<!--END_BODY-->')[0].trim();
+    //////w2popup.lock('Saving document ...', true);
+    ////var fileHtm = f_html_getPathFile();
+    ////var data = document.body.innerHTML.split('<!--END_BODY-->')[0].trim();
 
-    if (data.indexOf('<!--_____PAGE_LOADING_____-->') != -1) return;
+    ////if (data.indexOf('<!--_____PAGE_LOADING_____-->') != -1) return;
 
-    var ok = f_writeFile(fileHtm, data);
+    ////var ok = f_writeFile(fileHtm, data);
 
-    if (isAutoSave) {
-        if (_config.HtmlChanged == true) return;
-        f_log('AUTO_SAVE = ' + ok.toString() + ' at ' + new Date().toString());
-        _config.HtmlChanged = true;
-    } else {
-        if (ok) {
-            f_alert('Save the document successfully');
-            _config.HtmlChanged = true;
-        }
-        else {
-            f_alert('Save the document fail');
-        }
-    }
+    ////if (isAutoSave) {
+    ////    if (_config.HtmlChanged == true) return;
+    ////    f_log('AUTO_SAVE = ' + ok.toString() + ' at ' + new Date().toString());
+    ////    _config.HtmlChanged = true;
+    ////} else {
+    ////    if (ok) {
+    ////        f_alert('Save the document successfully');
+    ////        _config.HtmlChanged = true;
+    ////    }
+    ////    else {
+    ////        f_alert('Save the document fail');
+    ////    }
+    ////}
 }
 
 ////////////////////////////////////////////////////////////

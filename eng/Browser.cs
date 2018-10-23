@@ -296,10 +296,10 @@ namespace eng
 
             Console.WriteLine(" -> Ok: " + url);
 
-            string title = Html.f_html_getTitle(html);
+            //string title = Html.f_html_getTitle(html);
             html = _htmlFormat(url, html);
-            f_cacheUrl(url);
-            CACHE.TryAdd(url, html);
+            //f_cacheUrl(url);
+            //CACHE.TryAdd(url, html);
 
             //string err = process.StandardError.ReadToEnd();
             process.WaitForExit();
@@ -440,8 +440,7 @@ namespace eng
 
                     return true;
                 }
-                else if (path.EndsWith(".css"))
-                    File.Create(path);
+                //else if (path.EndsWith(".css")) File.Create(path);
             }
 
             #endregion
@@ -456,12 +455,12 @@ namespace eng
             string file = "view/html/" + uri.Host + "/" + string.Join("-", uri.AbsolutePath.Split('/').Where(x => x.Trim().Length > 0).ToArray()) + ".htm",
                 _cache = string.Empty;
 
-            if (File.Exists(file))
-            {
-                text = File.ReadAllText(file);
-                if (!string.IsNullOrWhiteSpace(text))
-                    _cache = "<script> console.log('CACHE = ','" + file + "'); if(_config) _config.IsCached = true; </script>";
-            }
+            //if (File.Exists(file))
+            //{
+            //    text = File.ReadAllText(file);
+            //    if (!string.IsNullOrWhiteSpace(text))
+            //        _cache = "<script> console.log('CACHE = ','" + file + "'); if(_config) _config.IsCached = true; </script>";
+            //}
 
             if (_cache.Length == 0)
             {
