@@ -270,12 +270,25 @@ function f_editor_Save(isAutoSave) {
 ////////////////////////////////////////////////////////////
 
 function f_english_page_exportWordsAndSentences() {
-    var text = _.startCase(document.body.innerText.trim());
+    var s = document.body.innerText.trim();
+    var text = _.startCase(s);
     var words = text.split(' ');
     words = _.filter(words, function (wo) { return wo.length > 3; });
     words = _.uniqBy(words, function (e) { return e; });
     words = _.orderBy(words);
     _page_words = _.map(words, function (wo, index) { return { recid: index + 1, word: wo }; });
+
+    //var a = _.filter(_.map(s.split('.').join('|').split('\n').join('|').split('|'), function (si) { return si.trim(); }), function (si2) { return si2.split(' ').length > 4; });
+    //f_log(a);
+
+
+    var ps = document.querySelectorAll('p'), a = [];
+    for (var i = 0; i < ps.length; i++) {
+        var el = ps[i], tem = el.innerText;
+        if (tem == null || tem.split(' ').length < 5) continue;
+        a.push(tem);
+    }
+    f_log(a);
 }
 
 function f_english_Keywords(menu) {
