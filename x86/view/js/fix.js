@@ -267,7 +267,7 @@ function f_editor_autoSaveRun() {
 function f_editor_Save(isAutoSave) {
     //////w2popup.lock('Saving document ...', true);
     ////var fileHtm = f_html_getPathFile();
-    ////var data = document.body.innerHTML.split('<!--END_BODY-->')[0].trim();
+    ////var data = document.body.innerHTML.split('<!--END_BODY-->')[0].split('<!--START_BODY-->')[1].trim();
 
     ////if (data.indexOf('<!--_____PAGE_LOADING_____-->') != -1) return;
 

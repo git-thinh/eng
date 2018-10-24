@@ -250,9 +250,11 @@ namespace eng
             process.StartInfo.CreateNoWindow = true;
             process.StartInfo.FileName = "curl.exe";
             //process.StartInfo.Arguments = url;
+            process.StartInfo.Arguments = url;
             //process.StartInfo.Arguments = "--insecure " + url;
             //process.StartInfo.Arguments = "--max-time 5 -v " + url; /* -v url: handle error 302 found redirect localtion*/
-            process.StartInfo.Arguments = "-m 5 -v " + url; /* -v url: handle error 302 found redirect localtion*/
+            //process.StartInfo.Arguments = "-m 5 -v " + url; /* -v url: handle error 302 found redirect localtion*/
+            //process.StartInfo.Arguments = "--insecure -v " + url + @" -H ""User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:62.0) Gecko/20100101 Firefox/62.0"""; /* -v url: handle error 302 found redirect localtion*/
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardError = true;
@@ -260,42 +262,42 @@ namespace eng
             process.Start();
             //* Read the output (or the error)
             string html = process.StandardOutput.ReadToEnd();
-            if (string.IsNullOrEmpty(html))
-            {
-                string err = process.StandardError.ReadToEnd(), urlDirect = string.Empty;
+            //if (string.IsNullOrEmpty(html))
+            //{
+            //    string err = process.StandardError.ReadToEnd(), urlDirect = string.Empty;
 
-                int pos = err.IndexOf("< Location: ");
-                if (pos != -1)
-                {
-                    urlDirect = err.Substring(pos + 12, err.Length - (pos + 12)).Split(new char[] { '\r', '\n' })[0].Trim();
-                    if (urlDirect[0] == '/')
-                    {
-                        Uri uri = new Uri(url);
-                        urlDirect = uri.Scheme + "://" + uri.Host + urlDirect;
-                    }
+            //    int pos = err.IndexOf("< Location: ");
+            //    if (pos != -1)
+            //    {
+            //        urlDirect = err.Substring(pos + 12, err.Length - (pos + 12)).Split(new char[] { '\r', '\n' })[0].Trim();
+            //        if (urlDirect[0] == '/')
+            //        {
+            //            Uri uri = new Uri(url);
+            //            urlDirect = uri.Scheme + "://" + uri.Host + urlDirect;
+            //        }
 
-                    Console.WriteLine("-> Redirect: " + urlDirect);
+            //        Debug.WriteLine("-> Redirect: " + urlDirect);
 
 
-                    html = f_link_getHtmlCache(urlDirect);
-                    if (string.IsNullOrEmpty(html))
-                    {
-                        return "<script> location.href='" + urlDirect + "'; </script>";
-                    }
-                    else
-                        return html;
-                }
-                else
-                {
-                    Console.WriteLine(" ??????????????????????????????????????????? ERROR: " + url);
-                }
+            //        html = f_link_getHtmlCache(urlDirect);
+            //        if (string.IsNullOrEmpty(html))
+            //        {
+            //            return "<script> location.href='" + urlDirect + "'; </script>";
+            //        }
+            //        else
+            //            return html;
+            //    }
+            //    else
+            //    {
+            //        Debug.WriteLine(" ??????????????????????????????????????????? ERROR: " + url);
+            //    }
 
-                Console.WriteLine(" -> Fail: " + url);
+            //    Debug.WriteLine(" -> Fail: " + url);
 
-                return null;
-            }
+            //    return null;
+            //}
 
-            Console.WriteLine(" -> Ok: " + url);
+            Debug.WriteLine(" -> Ok: " + url);
 
             //////string title = Html.f_html_getTitle(html);
             //html = _htmlFormat(url, html);
@@ -449,11 +451,17 @@ namespace eng
             var headers = request.GetHeaders();
             if (headers.ContainsKey("Accept")) accept = headers["Accept"];
 
-            if (!accept.Contains("text/html") && !accept.Contains("text/css"))
+            if (!accept.Contains("text/html"))
             {
                 Debug.WriteLine("|-> " + url);
                 return false;
             }
+
+            //if (!accept.Contains("text/html") && !accept.Contains("text/css"))
+            //{
+            //    Debug.WriteLine("|-> " + url);
+            //    return false;
+            //}
 
             //if (headers.ContainsKey("Referer")) return false;
             //if (url.Contains(".css"))
@@ -476,11 +484,10 @@ namespace eng
                 s = Html.f_html_Format(url, s);
 
                 if (File.Exists("view/fix.html")) _fix_lib = File.ReadAllText("view/fix.html");
-                text = head.Replace("<head>", @"<head><meta http-equiv=""Content-Type"" content=""text/html; charset=utf-8"" />") + "<body>" + s + _fix_lib;
+                text = head.Replace("<head>", @"<head><meta http-equiv=""Content-Type"" content=""text/html; charset=utf-8"" />" + _fix_lib) + "<body><!--START_BODY-->" + s + "<!--END_BODY--></body></html>";
                 mimeType = "text/html";
             }
-            else
-                mimeType = "text/css";
+            //else mimeType = "text/css";
 
             byte[] bytes = Encoding.UTF8.GetBytes(text);
             response.ResponseStream = new MemoryStream(bytes);

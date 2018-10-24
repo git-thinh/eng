@@ -19,11 +19,14 @@ namespace eng
             this.Height = Screen.PrimaryScreen.WorkingArea.Height;
 
             //URL = "res://local/view/ajax_api.html";
+            //URL = "https://dictionary.cambridge.org/grammar/british-grammar/above-or-over";
             URL = "https://dictionary.cambridge.org/grammar/british-grammar/";
-            URL = "https://www.w3schools.com/js/default.asp";
-            URL = "https://english.stackexchange.com/questions/87789/what-is-going-on-in-this-sentence";
-            URL = "https://stackoverflow.com/questions/tagged/javascript?sort=votes&pageSize=15";
+            ////URL = "https://www.w3schools.com/js/default.asp";
+            //URL = "https://english.stackexchange.com/questions/87789/what-is-going-on-in-this-sentence";
+            //URL = "https://stackoverflow.com/questions/tagged/javascript?sort=votes&pageSize=15";
             //URL = "https://www.codeproject.com/Articles/10890/Fastest-C-Case-Insenstive-String-Replace";
+            //URL = "https://gist.github.com/caspyin/2288960";
+            //URL = "https://github.com/git-thinh/everything-curl";
 
             ui_browser = new WebView("about:blank", new CefSharp.BrowserSettings()
             {

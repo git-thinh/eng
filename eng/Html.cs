@@ -135,14 +135,14 @@ namespace System
         {
             string si = string.Empty;
             s = Regex.Replace(s, @"<script[^>]*>[\s\S]*?</script>", string.Empty);
-            //s = Regex.Replace(s, @"<style[^>]*>[\s\S]*?</style>", string.Empty);
+            s = Regex.Replace(s, @"<style[^>]*>[\s\S]*?</style>", string.Empty);
             s = Regex.Replace(s, @"<noscript[^>]*>[\s\S]*?</noscript>", string.Empty);
             s = Regex.Replace(s, @"(?s)(?<=<!--).+?(?=-->)", string.Empty).Replace("<!---->", string.Empty);
 
             //s = Regex.Replace(s, @"<noscript[^>]*>[\s\S]*?</noscript>", string.Empty);
             //s = Regex.Replace(s, @"<noscript[^>]*>[\s\S]*?</noscript>", string.Empty);
             //s = Regex.Replace(s, @"</?(?i:embed|object|frameset|frame|iframe|meta|link)(.|\n|\s)*?>", string.Empty, RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            s = Regex.Replace(s, @"</?(?i:base|nav|form|input|fieldset|button|symbol|path|canvas|use|ins|svg|embed|object|frameset|frame|meta|noscript)(.|\n|\s)*?>", string.Empty, RegexOptions.Singleline | RegexOptions.IgnoreCase);
+            s = Regex.Replace(s, @"</?(?i:base|nav|form|input|fieldset|button|symbol|path|canvas|use|ins|svg|embed|object|frameset|frame|meta|link|noscript)(.|\n|\s)*?>", string.Empty, RegexOptions.Singleline | RegexOptions.IgnoreCase);
 
             //// Remove attribute style="padding:10px;..."
             //s = Regex.Replace(s, @"<([^>]*)(\sstyle="".+?""(\s|))(.*?)>", string.Empty);
