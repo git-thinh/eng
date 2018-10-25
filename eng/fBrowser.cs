@@ -31,7 +31,8 @@ namespace eng
             ui_browser = new WebView("about:blank", new CefSharp.BrowserSettings()
             {
                 WebSecurityDisabled = true,
-                PageCacheDisabled = true
+                PageCacheDisabled = true,
+                DefaultFontSize = 15,
             })
             { Dock = DockStyle.Fill };
             this.Controls.Add(ui_browser);

@@ -197,7 +197,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
 
     //_links = f_link_getList();
-    //f_english_page_exportWordsAndSentences();
+    f_english_page_exportWordsAndSentences();
     //f_english_Keywords();
     //f_english_Sentences();
 });

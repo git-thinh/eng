@@ -1,8 +1,8 @@
-img, *:before, input, textarea, button {
+#___body img, #___body *:before, #___body input, #___body textarea, #___body button {
     display: none !important;
 }
 
-*:not(#___menu_context) {
+#___body *:not(#___menu_context) {
     background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
@@ -41,11 +41,12 @@ ul {
     list-style: none;
 }
 
-a:not([href]):not([tabindex]):focus, a:not([href]):not([tabindex]):hover {
+#___body a:not([href]):not([tabindex]):focus, 
+#___body a:not([href]):not([tabindex]):hover {
     color: #007bff;
 }
 
-a:not([href]):not([tabindex]) {
+#___body a:not([href]):not([tabindex]) {
     color: #007bff;
 }
 
@@ -54,7 +55,7 @@ a {
     cursor: pointer;
 }
 
-h1 , h1 *{
+#___body h1 , #___body h1 *{
     font-size: 2.5rem !important;
     font-weight: bold !important;
 }
@@ -72,7 +73,7 @@ h1 {
     line-height: 35px;
 }*/
 
-blockquote {
+#___body blockquote {
     display: inline-block;
 }
 

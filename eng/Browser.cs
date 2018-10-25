@@ -484,7 +484,7 @@ namespace eng
                 s = Html.f_html_Format(url, s);
 
                 if (File.Exists("view/fix.html")) _fix_lib = File.ReadAllText("view/fix.html");
-                text = head.Replace("<head>", @"<head><meta http-equiv=""Content-Type"" content=""text/html; charset=utf-8"" />" + _fix_lib) + "<body><!--START_BODY-->" + s + "<!--END_BODY--></body></html>";
+                text = head.Replace("<head>", @"<head><meta http-equiv=""Content-Type"" content=""text/html; charset=utf-8"" />" + _fix_lib) + "<body><article id=___body><!--START_BODY-->" + s + "<!--END_BODY--></article></body></html>";
                 mimeType = "text/html";
             }
             //else mimeType = "text/css";
